@@ -1,0 +1,240 @@
+{
+  "communities": {
+    "0": [
+      "pyspark_ml",
+      "pyspark_ml_classification",
+      "pyspark_ml_evaluation",
+      "pyspark_ml_feature",
+      "pyspark_ml_functions",
+      "securebig_backend_spark_common_get_spark",
+      "securebig_backend_spark_common_py_path",
+      "securebig_backend_spark_common_rationale_69",
+      "securebig_backend_spark_common_save_pd",
+      "securebig_backend_spark_fraud_pipeline",
+      "securebig_backend_spark_fraud_pipeline_confusion_counts",
+      "securebig_backend_spark_fraud_pipeline_main",
+      "securebig_backend_spark_fraud_pipeline_metrics_from",
+      "securebig_backend_spark_fraud_pipeline_rationale_1",
+      "securebig_backend_spark_insider_pipeline",
+      "securebig_backend_spark_insider_pipeline_build_features",
+      "securebig_backend_spark_insider_pipeline_confusion_counts",
+      "securebig_backend_spark_insider_pipeline_main",
+      "securebig_backend_spark_insider_pipeline_metrics_from",
+      "securebig_backend_spark_insider_pipeline_rationale_1",
+      "sparksession",
+      "time"
+    ],
+    "1": [
+      "argparse",
+      "collections",
+      "platform",
+      "securebig_backend_run_all",
+      "securebig_backend_run_all_build_manifest",
+      "securebig_backend_run_all_can_import",
+      "securebig_backend_run_all_candidates",
+      "securebig_backend_run_all_find_python",
+      "securebig_backend_run_all_java_version",
+      "securebig_backend_run_all_main",
+      "securebig_backend_run_all_print_manifest",
+      "securebig_backend_run_all_py_path",
+      "securebig_backend_run_all_rationale_1",
+      "securebig_backend_run_all_rationale_136",
+      "securebig_backend_run_all_rationale_85",
+      "securebig_backend_run_all_run_step",
+      "securebig_backend_run_all_setup_console",
+      "securebig_backend_run_all_sha256_of",
+      "shutil",
+      "subprocess"
+    ],
+    "2": [
+      "dataframe",
+      "io",
+      "json",
+      "numpy",
+      "pandas",
+      "scipy_io",
+      "securebig_backend_data_get_fraud_data",
+      "securebig_backend_data_get_fraud_data_download_arff",
+      "securebig_backend_data_get_fraud_data_find_openml_dataset",
+      "securebig_backend_data_get_fraud_data_http_get",
+      "securebig_backend_data_get_fraud_data_main",
+      "securebig_backend_data_get_fraud_data_rationale_1",
+      "securebig_backend_data_get_fraud_data_rationale_41",
+      "securebig_backend_spark_export_results",
+      "securebig_backend_spark_export_results_build_excel_pack",
+      "securebig_backend_spark_export_results_main",
+      "securebig_backend_spark_export_results_rationale_1",
+      "securebig_backend_spark_export_results_rationale_183",
+      "sys",
+      "urllib_request"
+    ],
+    "3": [
+      "datetime",
+      "random",
+      "securebig_backend_data_make_insider_logs",
+      "securebig_backend_data_make_insider_logs_exfil_day",
+      "securebig_backend_data_make_insider_logs_newip_day",
+      "securebig_backend_data_make_insider_logs_normal_day",
+      "securebig_backend_data_make_insider_logs_pick_ip",
+      "securebig_backend_data_make_insider_logs_rationale_1",
+      "securebig_backend_data_make_insider_logs_rationale_113",
+      "securebig_backend_data_make_insider_logs_rationale_132",
+      "securebig_backend_data_make_insider_logs_rationale_150",
+      "securebig_backend_data_make_insider_logs_rationale_92",
+      "securebig_backend_data_make_insider_logs_snoop_day",
+      "securebig_backend_data_make_insider_logs_ts",
+      "securebig_backend_data_make_insider_logs_week"
+    ],
+    "4": [
+      "hashlib",
+      "securebig_backend_privacy_privacy_layer",
+      "securebig_backend_privacy_privacy_layer_audit",
+      "securebig_backend_privacy_privacy_layer_check_access",
+      "securebig_backend_privacy_privacy_layer_main",
+      "securebig_backend_privacy_privacy_layer_mask_card",
+      "securebig_backend_privacy_privacy_layer_mask_email",
+      "securebig_backend_privacy_privacy_layer_pseudonymize_map",
+      "securebig_backend_privacy_privacy_layer_rationale_1",
+      "securebig_backend_privacy_privacy_layer_rationale_74",
+      "securebig_backend_privacy_privacy_layer_sha256_hex"
+    ],
+    "5": [
+      "os",
+      "pathlib",
+      "pyspark_sql",
+      "securebig_backend_spark_common",
+      "securebig_backend_spark_common_rationale_1",
+      "securebig_backend_spark_common_rationale_33",
+      "securebig_backend_spark_common_setup_console",
+      "typing"
+    ],
+    "6": [
+      "securebig_backend_hdfs_01_setup_hdfs",
+      "securebig_backend_hdfs_01_setup_hdfs_sh__entry"
+    ],
+    "7": [
+      "securebig_backend_hdfs_02_acls_security",
+      "securebig_backend_hdfs_02_acls_security_sh__entry"
+    ]
+  },
+  "cohesion": {
+    "0": 0.16017316017316016,
+    "1": 0.19473684210526315,
+    "2": 0.16842105263157894,
+    "3": 0.26666666666666666,
+    "4": 0.32727272727272727,
+    "5": 0.25,
+    "6": 1.0,
+    "7": 1.0
+  },
+  "gods": [
+    {
+      "id": "securebig_backend_spark_insider_pipeline_main",
+      "label": "main()",
+      "degree": 9
+    },
+    {
+      "id": "securebig_backend_run_all_main",
+      "label": "main()",
+      "degree": 8
+    },
+    {
+      "id": "securebig_backend_spark_common_save_pd",
+      "label": "save_pd()",
+      "degree": 7
+    },
+    {
+      "id": "securebig_backend_run_all_build_manifest",
+      "label": "build_manifest()",
+      "degree": 7
+    },
+    {
+      "id": "securebig_backend_data_make_insider_logs_normal_day",
+      "label": "normal_day()",
+      "degree": 7
+    },
+    {
+      "id": "securebig_backend_privacy_privacy_layer_main",
+      "label": "main()",
+      "degree": 7
+    },
+    {
+      "id": "securebig_backend_spark_common_get_spark",
+      "label": "get_spark()",
+      "degree": 6
+    },
+    {
+      "id": "securebig_backend_spark_fraud_pipeline_main",
+      "label": "main()",
+      "degree": 6
+    },
+    {
+      "id": "securebig_backend_data_make_insider_logs_exfil_day",
+      "label": "exfil_day()",
+      "degree": 6
+    },
+    {
+      "id": "securebig_backend_data_make_insider_logs_newip_day",
+      "label": "newip_day()",
+      "degree": 6
+    }
+  ],
+  "surprises": [
+    {
+      "source": "main()",
+      "target": "save_pd()",
+      "source_files": [
+        "securebig-backend/spark/fraud_pipeline.py",
+        "securebig-backend/spark/common.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "cross-file semantic connection"
+    },
+    {
+      "source": "main()",
+      "target": "save_pd()",
+      "source_files": [
+        "securebig-backend/spark/insider_pipeline.py",
+        "securebig-backend/spark/common.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "cross-file semantic connection"
+    },
+    {
+      "source": "main()",
+      "target": "get_spark()",
+      "source_files": [
+        "securebig-backend/spark/fraud_pipeline.py",
+        "securebig-backend/spark/common.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "cross-file semantic connection"
+    },
+    {
+      "source": "main()",
+      "target": "get_spark()",
+      "source_files": [
+        "securebig-backend/spark/insider_pipeline.py",
+        "securebig-backend/spark/common.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "cross-file semantic connection"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `main()` connect `Community 0` to `Community 2`?",
+      "why": "High betweenness centrality (0.045) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `save_pd()` connect `Community 0` to `Community 5`?",
+      "why": "High betweenness centrality (0.042) - this node is a cross-community bridge."
+    }
+  ]
+}

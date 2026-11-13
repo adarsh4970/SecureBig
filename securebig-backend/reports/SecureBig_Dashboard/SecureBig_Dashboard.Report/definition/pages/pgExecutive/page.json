@@ -1,0 +1,20 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
+  "name": "pgExecutive",
+  "displayName": "Executive Overview",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280,
+  "visualInteractions": [
+    {
+      "source": "slicer_dataset",
+      "target": "donut_model_f1",
+      "type": "NoFilter"
+    },
+    {
+      "source": "slicer_dataset",
+      "target": "table_model_metrics",
+      "type": "NoFilter"
+    }
+  ]
+}

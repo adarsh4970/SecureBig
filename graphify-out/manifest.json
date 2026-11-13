@@ -1,0 +1,104 @@
+{
+  "securebig-3d-ui/dashboard_data.json": {
+    "mtime": 1790846183.2323246,
+    "seen": 1794296606.4460964,
+    "ast_hash": "78262122e3d8bd07930e99b5beac90a9",
+    "semantic_hash": "78262122e3d8bd07930e99b5beac90a9",
+    "ast_empty": true
+  },
+  "securebig-backend/data/get_fraud_data.py": {
+    "mtime": 1790836503.1024172,
+    "seen": 1794296606.4460964,
+    "ast_hash": "59d3e65eaeabb29e403caf1122def90d",
+    "semantic_hash": "59d3e65eaeabb29e403caf1122def90d"
+  },
+  "securebig-backend/data/make_insider_logs.py": {
+    "mtime": 1790835517.781952,
+    "seen": 1794296606.4460964,
+    "ast_hash": "d7f06a31ce5aea8745696993b20270c0",
+    "semantic_hash": "d7f06a31ce5aea8745696993b20270c0"
+  },
+  "securebig-backend/hdfs/01_setup_hdfs.sh": {
+    "mtime": 1790835595.1876688,
+    "seen": 1794296606.4471154,
+    "ast_hash": "a30eae780cff0641275d31330008d57a",
+    "semantic_hash": "a30eae780cff0641275d31330008d57a"
+  },
+  "securebig-backend/hdfs/02_acls_security.sh": {
+    "mtime": 1790835595.235278,
+    "seen": 1794296606.4471154,
+    "ast_hash": "173256501513840d2a82338a275e4355",
+    "semantic_hash": "173256501513840d2a82338a275e4355"
+  },
+  "securebig-backend/privacy/privacy_layer.py": {
+    "mtime": 1790835562.6005678,
+    "seen": 1794296606.4471154,
+    "ast_hash": "a0c638d71b114853f570a917f75e2384",
+    "semantic_hash": "a0c638d71b114853f570a917f75e2384"
+  },
+  "securebig-backend/results/dashboard/dashboard_data.json": {
+    "mtime": 1794295978.4721403,
+    "seen": 1794296606.4471154,
+    "ast_hash": "78262122e3d8bd07930e99b5beac90a9",
+    "semantic_hash": "78262122e3d8bd07930e99b5beac90a9",
+    "ast_empty": true
+  },
+  "securebig-backend/results/environment_manifest.json": {
+    "mtime": 1794296122.986603,
+    "seen": 1794296606.4471154,
+    "ast_hash": "8b62879f4e923e8d364c92701235de75",
+    "semantic_hash": "8b62879f4e923e8d364c92701235de75",
+    "ast_empty": true
+  },
+  "securebig-backend/results/fraud/roc_points_best.json": {
+    "mtime": 1790846177.8115847,
+    "seen": 1794296606.4471154,
+    "ast_hash": "5c73583537664891dca2e376c2f9885b",
+    "semantic_hash": "5c73583537664891dca2e376c2f9885b",
+    "ast_empty": true
+  },
+  "securebig-backend/results/insider_threat/roc_points_best.json": {
+    "mtime": 1790836393.6163216,
+    "seen": 1794296606.4471154,
+    "ast_hash": "00ca235c59036f0fec643cea0c641afd",
+    "semantic_hash": "00ca235c59036f0fec643cea0c641afd",
+    "ast_empty": true
+  },
+  "securebig-backend/results/powerbi/securebig-theme.json": {
+    "mtime": 1790845601.392255,
+    "seen": 1794296606.4471154,
+    "ast_hash": "fbec9df897a435fda23585054435bade",
+    "semantic_hash": "fbec9df897a435fda23585054435bade",
+    "ast_empty": true
+  },
+  "securebig-backend/run_all.py": {
+    "mtime": 1794295904.3061602,
+    "seen": 1794296606.4471154,
+    "ast_hash": "882eca222b6a18c8fdecd391a51bd062",
+    "semantic_hash": "882eca222b6a18c8fdecd391a51bd062"
+  },
+  "securebig-backend/spark/common.py": {
+    "mtime": 1794295963.4868076,
+    "seen": 1794296606.4471154,
+    "ast_hash": "fb5c95ac410b863e84d735a7e72d10d9",
+    "semantic_hash": "fb5c95ac410b863e84d735a7e72d10d9"
+  },
+  "securebig-backend/spark/export_results.py": {
+    "mtime": 1790846956.1160269,
+    "seen": 1794296606.4471154,
+    "ast_hash": "5b0cb3258fa872b17a3f264083776314",
+    "semantic_hash": "5b0cb3258fa872b17a3f264083776314"
+  },
+  "securebig-backend/spark/fraud_pipeline.py": {
+    "mtime": 1790845681.8047757,
+    "seen": 1794296606.4481082,
+    "ast_hash": "de49606471ed35125d55668ec4dbb576",
+    "semantic_hash": "de49606471ed35125d55668ec4dbb576"
+  },
+  "securebig-backend/spark/insider_pipeline.py": {
+    "mtime": 1790836295.0016038,
+    "seen": 1794296606.4481082,
+    "ast_hash": "5db262ec94adca15c4c6fdd76ba97dc8",
+    "semantic_hash": "5db262ec94adca15c4c6fdd76ba97dc8"
+  }
+}

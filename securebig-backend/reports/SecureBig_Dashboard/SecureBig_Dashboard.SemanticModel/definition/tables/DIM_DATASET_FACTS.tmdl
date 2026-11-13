@@ -1,0 +1,33 @@
+table DIM_DATASET_FACTS
+	lineageTag: 0ac26dd5-bea2-4724-8837-94e8ad056628
+
+	measure 'Total Transactions (full dataset)' = LOOKUPVALUE ( DIM_DATASET_FACTS[value], DIM_DATASET_FACTS[fact], "dataset_rows" )
+		formatString: #,0
+		lineageTag: 28b30141-58fe-412e-8800-0655555a68c1
+
+	measure 'Dataset Fraud Rate %' = LOOKUPVALUE ( DIM_DATASET_FACTS[value], DIM_DATASET_FACTS[fact], "dataset_fraud_rate_pct" )
+		formatString: 0.000
+		lineageTag: e62dd79b-9bcd-47ee-9c29-00f4fffd0407
+
+	column fact
+		dataType: string
+		lineageTag: 4c5fc75a-7888-4108-b8a8-3a57deec83ae
+		sourceColumn: fact
+
+	column value
+		dataType: double
+		formatString: #,0.000
+		lineageTag: d7732c05-ba15-4a10-981d-75a6c8973ec9
+		sourceColumn: value
+
+	partition DIM_DATASET_FACTS = m
+		mode: import
+		source =
+				let
+					Source = Excel.Workbook(File.Contents("C:\\Users\\Adarsh singh\\.zcode\\workspace\\default\\securebig-backend\\results\\powerbi\\SecureBig_Tables.xlsx"), null, false),
+					Sheet = Source{[Item="DIM_DATASET_FACTS",Kind="Sheet"]}[Data],
+					Promoted = Table.PromoteHeaders(Sheet, [PromoteAllScalars=true]),
+					ChangedType = Table.TransformColumnTypes(Promoted,{{"fact", type text}, {"value", type number}})
+				in
+					ChangedType
+

@@ -1,0 +1,4 @@
+RiskLevel,MinScore,MaxScore
+LOW,0,30
+MEDIUM,31,60
+HIGH,61,100

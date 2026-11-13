@@ -1,0 +1,12 @@
+{"role": "ADMIN", "zone": "masked_data", "decision": "GRANT", "note": "ACL matrix lookup"}
+{"role": "ADMIN", "zone": "anonymized_data", "decision": "GRANT", "note": "ACL matrix lookup"}
+{"role": "ADMIN", "zone": "restricted_data", "decision": "GRANT", "note": "ACL matrix lookup"}
+{"role": "SECURITY_ANALYST", "zone": "masked_data", "decision": "GRANT", "note": "ACL matrix lookup"}
+{"role": "SECURITY_ANALYST", "zone": "anonymized_data", "decision": "GRANT", "note": "ACL matrix lookup"}
+{"role": "SECURITY_ANALYST", "zone": "restricted_data", "decision": "DENY", "note": "ACL matrix lookup"}
+{"role": "DATA_ANALYST", "zone": "masked_data", "decision": "DENY", "note": "ACL matrix lookup"}
+{"role": "DATA_ANALYST", "zone": "anonymized_data", "decision": "GRANT", "note": "ACL matrix lookup"}
+{"role": "DATA_ANALYST", "zone": "restricted_data", "decision": "DENY", "note": "ACL matrix lookup"}
+{"role": "GUEST", "zone": "masked_data", "decision": "DENY", "note": "ACL matrix lookup"}
+{"role": "GUEST", "zone": "anonymized_data", "decision": "DENY", "note": "ACL matrix lookup"}
+{"role": "GUEST", "zone": "restricted_data", "decision": "DENY", "note": "ACL matrix lookup"}

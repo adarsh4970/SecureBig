@@ -1,0 +1,28 @@
+# SecureBig - version control ignore rules
+#
+# Policy: never commit the ~288 MB raw credit-card files (they are re-downloadable
+# via `python data/get_fraud_data.py`), DO commit the small simulated insider logs
+# and every results table that the report and dashboard quote.
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# ---- Spark local-mode leftovers ----
+spark-warehouse/
+metastore_db/
+derby.log
+
+# ---- Large raw datasets (regenerate with: python data/get_fraud_data.py) ----
+securebig-backend/data/raw/transactions/*.csv
+securebig-backend/data/raw/transactions/*.arff
+
+# ---- Per-run console logs (recreated by run_all.py) ----
+securebig-backend/results/logs/
+
+# ---- OS / editor noise ----
+Thumbs.db
+.DS_Store

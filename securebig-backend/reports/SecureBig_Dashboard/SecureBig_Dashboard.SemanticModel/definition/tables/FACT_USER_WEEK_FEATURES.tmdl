@@ -1,0 +1,122 @@
+table FACT_USER_WEEK_FEATURES
+	lineageTag: 184a30b4-52c8-41e6-967a-97bf1b5513e8
+
+	measure 'Suspicious User-Weeks' = CALCULATE ( COUNTROWS ( FACT_USER_WEEK_FEATURES ), FACT_USER_WEEK_FEATURES[prediction] = 1 )
+		formatString: #,0
+		lineageTag: 9d5a06b6-b922-46d7-a528-1db1ca5187e1
+
+	measure 'Avg Suspicion Score' = AVERAGE ( FACT_USER_WEEK_FEATURES[suspicion_prob] )
+		formatString: 0.0000
+		lineageTag: 208cc030-cc50-4f8d-a439-b7c490ea6cd2
+
+	measure 'High-Risk Users' = COUNTROWS ( FILTER ( VALUES ( FACT_USER_WEEK_FEATURES[user] ), CALCULATE ( MAX ( FACT_USER_WEEK_FEATURES[suspicion_prob] ) ) > 0.5 ) )
+		formatString: #,0
+		lineageTag: 83b7f3da-c45b-4978-9040-ad080a72f263
+
+	measure 'User-Week Count' = COUNTROWS ( FACT_USER_WEEK_FEATURES )
+		formatString: #,0
+		lineageTag: fdd851d6-ba57-45db-95c6-7218996ca1c0
+
+	measure 'Event Count' = SUM ( FACT_USER_WEEK_FEATURES[total_events] )
+		formatString: #,0
+		lineageTag: 8413e49b-b7d1-4a2a-bbd9-7cc588c1a6b9
+
+	column user
+		dataType: string
+		lineageTag: af8af3d8-0891-4819-919c-325c44f1a0a6
+		sourceColumn: user
+
+	column week
+		dataType: int64
+		lineageTag: fc0cb2f3-2807-4fd9-8b51-52788b7d7a05
+		sourceColumn: week
+
+	column label
+		dataType: int64
+		lineageTag: eb2726a5-4918-46f5-894b-34d5c7acc5cf
+		summarizeBy: none
+		sourceColumn: label
+
+	column prediction
+		dataType: int64
+		lineageTag: db38b2f8-817c-481d-bfcf-39ac940835f8
+		summarizeBy: none
+		sourceColumn: prediction
+
+	column suspicion_prob
+		dataType: double
+		formatString: 0.0000
+		lineageTag: 77e76317-d9a8-47d3-a625-6998522a37c4
+		sourceColumn: suspicion_prob
+
+	column logon_count
+		dataType: int64
+		lineageTag: 478ffa4c-abd4-4795-a528-2596fdf30057
+		sourceColumn: logon_count
+
+	column failed_login_count
+		dataType: int64
+		lineageTag: 014abc75-a6f6-40fd-9d8e-3d4a23740dfa
+		sourceColumn: failed_login_count
+
+	column after_hours_logons
+		dataType: int64
+		lineageTag: 3f74b764-8de2-46fa-baa2-ede5be99e02c
+		sourceColumn: after_hours_logons
+
+	column external_ip_logons
+		dataType: int64
+		lineageTag: 08681a42-8b0f-4761-a7c6-fddfd5c6e1c2
+		sourceColumn: external_ip_logons
+
+	column file_access_count
+		dataType: int64
+		lineageTag: 94c02bc7-81aa-4c47-a1f0-251a522c2423
+		sourceColumn: file_access_count
+
+	column sensitive_file_count
+		dataType: int64
+		lineageTag: 0671ef08-19ab-429c-bcf3-8dcc0f1b76ea
+		sourceColumn: sensitive_file_count
+
+	column file_copy_count
+		dataType: int64
+		lineageTag: f414f904-eda2-4321-bc89-a132f296d389
+		sourceColumn: file_copy_count
+
+	column usb_connects
+		dataType: int64
+		lineageTag: dc81c3d9-9794-40b6-b5d9-e5f1cf05a327
+		sourceColumn: usb_connects
+
+	column usb_bytes
+		dataType: int64
+		lineageTag: 77b3a7bb-bb70-4826-a900-d06cc4f6b609
+		sourceColumn: usb_bytes
+
+	column upload_events
+		dataType: int64
+		lineageTag: edec3a02-6bbe-4d94-8d53-344628caf6c6
+		sourceColumn: upload_events
+
+	column upload_bytes
+		dataType: int64
+		lineageTag: bafcd9cf-b98c-4ce3-9515-2451ed6e7210
+		sourceColumn: upload_bytes
+
+	column total_events
+		dataType: int64
+		lineageTag: 5c45c37b-12c6-46cd-bdf7-365ffe85e44b
+		sourceColumn: total_events
+
+	partition FACT_USER_WEEK_FEATURES = m
+		mode: import
+		source =
+				let
+					Source = Excel.Workbook(File.Contents("C:\\Users\\Adarsh singh\\.zcode\\workspace\\default\\securebig-backend\\results\\powerbi\\SecureBig_Tables.xlsx"), null, false),
+					Sheet = Source{[Item="FACT_USER_WEEK_FEATURES",Kind="Sheet"]}[Data],
+					Promoted = Table.PromoteHeaders(Sheet, [PromoteAllScalars=true]),
+					ChangedType = Table.TransformColumnTypes(Promoted,{{"user", type text}, {"week", Int64.Type}, {"label", Int64.Type}, {"prediction", Int64.Type}, {"suspicion_prob", type number}, {"logon_count", Int64.Type}, {"failed_login_count", Int64.Type}, {"after_hours_logons", Int64.Type}, {"external_ip_logons", Int64.Type}, {"file_access_count", Int64.Type}, {"sensitive_file_count", Int64.Type}, {"file_copy_count", Int64.Type}, {"usb_connects", Int64.Type}, {"usb_bytes", Int64.Type}, {"upload_events", Int64.Type}, {"upload_bytes", Int64.Type}, {"total_events", Int64.Type}})
+				in
+					ChangedType
+

@@ -1,0 +1,87 @@
+table FACT_TRANSACTIONS
+	lineageTag: 04f691d8-6f55-4997-be98-ee8df7cfdf64
+
+	measure 'Scored Transactions' = COUNTROWS ( FACT_TRANSACTIONS )
+		formatString: #,0
+		lineageTag: 2328d7e7-1263-4b0b-aeca-f6f89f15945a
+
+	measure 'Fraud Count' = CALCULATE ( [Scored Transactions], FACT_TRANSACTIONS[Class] = 1 )
+		formatString: #,0
+		lineageTag: 9ef2ba4e-b877-46d3-a939-e572a7ed9a90
+
+	measure 'Fraud Rate %' = DIVIDE ( [Fraud Count], [Scored Transactions], 0 ) * 100
+		formatString: 0.000
+		lineageTag: 37b9d98f-2ab9-46a0-977d-bc5c4586917b
+
+	measure 'Avg Fraud Probability' = AVERAGE ( FACT_TRANSACTIONS[fraud_prob] )
+		formatString: 0.0000
+		lineageTag: f2b59f9b-b0ef-4d0d-bb86-9ed8ed9919cb
+
+	measure 'True Positives' = CALCULATE ( [Scored Transactions], FACT_TRANSACTIONS[Class] = 1, FACT_TRANSACTIONS[prediction] = 1 )
+		formatString: #,0
+		lineageTag: effa5622-48db-41c0-9af9-8cdbc9b123c2
+
+	measure 'False Positives' = CALCULATE ( [Scored Transactions], FACT_TRANSACTIONS[Class] = 0, FACT_TRANSACTIONS[prediction] = 1 )
+		formatString: #,0
+		lineageTag: 28d49803-b08f-4ef2-ad0b-c7cb004e12bf
+
+	measure 'False Negatives' = CALCULATE ( [Scored Transactions], FACT_TRANSACTIONS[Class] = 1, FACT_TRANSACTIONS[prediction] = 0 )
+		formatString: #,0
+		lineageTag: 8d75f23a-765d-4074-818e-c7d634880354
+
+	measure 'Model Precision' = DIVIDE ( [True Positives], [True Positives] + [False Positives], 0 )
+		formatString: 0.000
+		lineageTag: 8fb777b1-2a58-4923-9bcc-752984f0bc43
+
+	measure 'Model Recall' = DIVIDE ( [True Positives], [True Positives] + [False Negatives], 0 )
+		formatString: 0.000
+		lineageTag: 468a77fa-03ce-4ee4-8be6-16a1e9bfb4c4
+
+	measure 'Model F1' = DIVIDE ( 2 * [Model Precision] * [Model Recall], [Model Precision] + [Model Recall], 0 )
+		formatString: 0.000
+		lineageTag: 7659d310-9b69-4126-9044-90393dcc0bb7
+
+	measure 'Transaction Count' = COUNTROWS ( FACT_TRANSACTIONS )
+		formatString: #,0
+		lineageTag: 94a8680a-6a13-47e4-8070-9c33a34ec998
+
+	column Time
+		dataType: double
+		lineageTag: 91eb07b9-f2b0-4897-8a48-3ad0f6a91cc6
+		sourceColumn: Time
+
+	column Amount
+		dataType: double
+		formatString: #,##0.00
+		lineageTag: 8d604405-666c-49a8-b52b-a1f7cf2f9f2a
+		sourceColumn: Amount
+
+	column Class
+		dataType: int64
+		lineageTag: 5012eff2-69f5-4082-a056-0364cfaab093
+		summarizeBy: none
+		sourceColumn: Class
+
+	column prediction
+		dataType: int64
+		lineageTag: 5e173ba7-9fb8-4626-b6ab-fbdecddf99ab
+		summarizeBy: none
+		sourceColumn: prediction
+
+	column fraud_prob
+		dataType: double
+		formatString: 0.0000
+		lineageTag: 7c0b8982-776a-432c-a903-dfd57348d235
+		sourceColumn: fraud_prob
+
+	partition FACT_TRANSACTIONS = m
+		mode: import
+		source =
+				let
+					Source = Excel.Workbook(File.Contents("C:\\Users\\Adarsh singh\\.zcode\\workspace\\default\\securebig-backend\\results\\powerbi\\SecureBig_Tables.xlsx"), null, false),
+					Sheet = Source{[Item="FACT_TRANSACTIONS",Kind="Sheet"]}[Data],
+					Promoted = Table.PromoteHeaders(Sheet, [PromoteAllScalars=true]),
+					ChangedType = Table.TransformColumnTypes(Promoted,{{"Time", type number}, {"Amount", type number}, {"Class", Int64.Type}, {"prediction", Int64.Type}, {"fraud_prob", type number}})
+				in
+					ChangedType
+

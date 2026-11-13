@@ -1,0 +1,180 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "note_insider",
+  "position": {
+    "x": 1042,
+    "y": 390,
+    "z": 8000,
+    "height": 310,
+    "width": 220,
+    "tabOrder": 8000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "query": {
+      "queryState": {}
+    },
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "READ WITH CARE",
+                    "textStyle": {
+                      "fontSize": "9D",
+                      "color": "#C8D6F0",
+                      "fontFamily": "'Segoe UI Semibold'"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "",
+                    "textStyle": {
+                      "fontSize": "9D",
+                      "color": "#C8D6F0",
+                      "fontFamily": "'Segoe UI Semibold'"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Insider logs are SIMULATED by the documented scenario generator (seed=42), not captured from a real enterprise.",
+                    "textStyle": {
+                      "fontSize": "9D",
+                      "color": "#C8D6F0",
+                      "fontFamily": "'Segoe UI Semibold'"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "",
+                    "textStyle": {
+                      "fontSize": "9D",
+                      "color": "#C8D6F0",
+                      "fontFamily": "'Segoe UI Semibold'"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Labels come from the same generator, so insider accuracy is optimistic by construction — do not present it as a field result.",
+                    "textStyle": {
+                      "fontSize": "9D",
+                      "color": "#C8D6F0",
+                      "fontFamily": "'Segoe UI Semibold'"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "",
+                    "textStyle": {
+                      "fontSize": "9D",
+                      "color": "#C8D6F0",
+                      "fontFamily": "'Segoe UI Semibold'"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "The real ULB credit-card data is on the Fraud Analytics page.",
+                    "textStyle": {
+                      "fontSize": "9D",
+                      "color": "#C8D6F0",
+                      "fontFamily": "'Segoe UI Semibold'"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#070B16'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "padding": [
+        {
+          "properties": {
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "0L"
+                }
+              }
+            },
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "0L"
+                }
+              }
+            },
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "0L"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "0L"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

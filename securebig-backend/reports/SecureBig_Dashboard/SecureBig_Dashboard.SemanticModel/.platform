@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "SecureBig_Dashboard"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "fec3a3fb-c5fa-4854-967b-41feb32bdb5c"
+  }
+}

@@ -1,0 +1,7 @@
+fact,value
+dataset_rows,284807.0
+dataset_frauds,492.0
+dataset_fraud_rate_pct,0.173
+scored_test_rows,56705.0
+scored_test_frauds,83.0
+scored_test_fraud_rate_pct,0.146

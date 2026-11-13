@@ -1,0 +1,180 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "note_privacy",
+  "position": {
+    "x": 18,
+    "y": 505,
+    "z": 8000,
+    "height": 195,
+    "width": 560,
+    "tabOrder": 8000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "query": {
+      "queryState": {}
+    },
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "THE PRIVACY LAYER",
+                    "textStyle": {
+                      "fontSize": "10D",
+                      "color": "#C8D6F0",
+                      "fontFamily": "'Segoe UI Semibold'"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "",
+                    "textStyle": {
+                      "fontSize": "10D",
+                      "color": "#C8D6F0",
+                      "fontFamily": "'Segoe UI Semibold'"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Every zone (masked / anonymised / restricted) is gated by HDFS ACLs before a query reaches the raw data.",
+                    "textStyle": {
+                      "fontSize": "10D",
+                      "color": "#C8D6F0",
+                      "fontFamily": "'Segoe UI Semibold'"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "",
+                    "textStyle": {
+                      "fontSize": "10D",
+                      "color": "#C8D6F0",
+                      "fontFamily": "'Segoe UI Semibold'"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "GUEST and DATA_ANALYST are denied the restricted zone; only ADMIN sees it. Security Analysts keep masked + anonymised access.",
+                    "textStyle": {
+                      "fontSize": "10D",
+                      "color": "#C8D6F0",
+                      "fontFamily": "'Segoe UI Semibold'"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "",
+                    "textStyle": {
+                      "fontSize": "10D",
+                      "color": "#C8D6F0",
+                      "fontFamily": "'Segoe UI Semibold'"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Masking and anonymisation are applied upstream (Spark), so analysts never touch raw PAN data.",
+                    "textStyle": {
+                      "fontSize": "10D",
+                      "color": "#C8D6F0",
+                      "fontFamily": "'Segoe UI Semibold'"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#070B16'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "padding": [
+        {
+          "properties": {
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "0L"
+                }
+              }
+            },
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "0L"
+                }
+              }
+            },
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "0L"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "0L"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

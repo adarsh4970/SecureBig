@@ -1,0 +1,12 @@
+# SecureBig backend - pinned for reproducibility.
+# Verified with Python 3.13.7 on Windows 11, Java 24 (Spark 4.2 needs Java 17+).
+# Install:   python -m pip install -r requirements.txt
+#
+# NOTE: `python` on PATH is not always the interpreter that has these packages.
+# run_all.py auto-detects a suitable interpreter (override with SECUREBIG_PYTHON).
+pyspark==4.2.0
+pandas==2.3.2
+numpy==2.3.3
+scipy==1.16.2
+scikit-learn==1.7.2
+openpyxl==3.1.5        # required by spark/export_results.py (SecureBig_Tables.xlsx)

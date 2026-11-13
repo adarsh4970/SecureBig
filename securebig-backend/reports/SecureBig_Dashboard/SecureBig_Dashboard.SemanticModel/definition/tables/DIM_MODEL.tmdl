@@ -1,0 +1,29 @@
+table DIM_MODEL
+	lineageTag: 40656011-56bd-467d-bed8-bad76e03a89f
+
+	column ModelId
+		dataType: int64
+		lineageTag: 5323ff7d-4830-482b-8fcc-305d2e44ec26
+		sourceColumn: ModelId
+
+	column Model
+		dataType: string
+		lineageTag: d06e9e22-8e43-4be1-91b5-e756ee010879
+		sourceColumn: Model
+
+	column Family
+		dataType: string
+		lineageTag: c742c428-442d-4ea6-b635-ae1c9382263c
+		sourceColumn: Family
+
+	partition DIM_MODEL = m
+		mode: import
+		source =
+				let
+					Source = Excel.Workbook(File.Contents("C:\\Users\\Adarsh singh\\.zcode\\workspace\\default\\securebig-backend\\results\\powerbi\\SecureBig_Tables.xlsx"), null, false),
+					Sheet = Source{[Item="DIM_MODEL",Kind="Sheet"]}[Data],
+					Promoted = Table.PromoteHeaders(Sheet, [PromoteAllScalars=true]),
+					ChangedType = Table.TransformColumnTypes(Promoted,{{"ModelId", Int64.Type}, {"Model", type text}, {"Family", type text}})
+				in
+					ChangedType
+

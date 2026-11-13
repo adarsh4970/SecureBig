@@ -1,0 +1,197 @@
+{
+  "engine": "Spark MLlib",
+  "seed": 42,
+  "source": "SecureBig backend run",
+  "fraud_models": [
+    {
+      "Model": "Logistic Regression",
+      "Accuracy": 0.9979895952737854,
+      "Precision": 0.406060606060606,
+      "Recall": 0.8072289156626506,
+      "F1": 0.5403225806451614,
+      "ROC_AUC": 0.9816754567278336,
+      "TP": 67,
+      "FP": 98,
+      "TN": 56524,
+      "FN": 16,
+      "train_seconds": 69.3
+    },
+    {
+      "Model": "Decision Tree",
+      "Accuracy": 0.99802486553214,
+      "Precision": 0.4171428571428571,
+      "Recall": 0.8795180722891566,
+      "F1": 0.5658914728682171,
+      "ROC_AUC": 0.9460012349918908,
+      "TP": 73,
+      "FP": 102,
+      "TN": 56520,
+      "FN": 10,
+      "train_seconds": 54.6
+    },
+    {
+      "Model": "Random Forest",
+      "Accuracy": 0.9994356758663258,
+      "Precision": 0.7802197802197802,
+      "Recall": 0.8554216867469879,
+      "F1": 0.8160919540229885,
+      "ROC_AUC": 0.9938630222915612,
+      "TP": 71,
+      "FP": 20,
+      "TN": 56602,
+      "FN": 12,
+      "train_seconds": 76.9
+    },
+    {
+      "Model": "Naive Bayes",
+      "Accuracy": 0.991006084119566,
+      "Precision": 0.099437148217636,
+      "Recall": 0.6385542168674698,
+      "F1": 0.172077922077922,
+      "ROC_AUC": 0.9680526705742114,
+      "TP": 53,
+      "FP": 480,
+      "TN": 56142,
+      "FN": 30,
+      "train_seconds": 31.2
+    },
+    {
+      "Model": "GBT",
+      "Accuracy": 0.9990300678952472,
+      "Precision": 0.6272727272727273,
+      "Recall": 0.8313253012048193,
+      "F1": 0.7150259067357513,
+      "ROC_AUC": 0.979331440416748,
+      "TP": 69,
+      "FP": 41,
+      "TN": 56581,
+      "FN": 14,
+      "train_seconds": 24.0
+    }
+  ],
+  "insider_models": [
+    {
+      "Model": "Logistic Regression",
+      "Accuracy": 0.9921875,
+      "Precision": 1.0,
+      "Recall": 0.8,
+      "F1": 0.888888888888889,
+      "ROC_AUC": 0.9752032520325202,
+      "TP": 16,
+      "FP": 0,
+      "TN": 492,
+      "FN": 4,
+      "train_seconds": 19.6
+    },
+    {
+      "Model": "Decision Tree",
+      "Accuracy": 0.99609375,
+      "Precision": 0.95,
+      "Recall": 0.95,
+      "F1": 0.95,
+      "ROC_AUC": 0.9745426829268292,
+      "TP": 19,
+      "FP": 1,
+      "TN": 491,
+      "FN": 1,
+      "train_seconds": 3.7
+    },
+    {
+      "Model": "Random Forest",
+      "Accuracy": 0.99609375,
+      "Precision": 0.9090909090909092,
+      "Recall": 1.0,
+      "F1": 0.9523809523809524,
+      "ROC_AUC": 0.9991361788617886,
+      "TP": 20,
+      "FP": 2,
+      "TN": 490,
+      "FN": 0,
+      "train_seconds": 4.4
+    },
+    {
+      "Model": "Naive Bayes",
+      "Accuracy": 0.99609375,
+      "Precision": 0.9090909090909092,
+      "Recall": 1.0,
+      "F1": 0.9523809523809524,
+      "ROC_AUC": 0.9979674796747968,
+      "TP": 20,
+      "FP": 2,
+      "TN": 490,
+      "FN": 0,
+      "train_seconds": 1.8
+    },
+    {
+      "Model": "GBT",
+      "Accuracy": 0.99609375,
+      "Precision": 0.95,
+      "Recall": 0.95,
+      "F1": 0.95,
+      "ROC_AUC": 0.9995934959349594,
+      "TP": 19,
+      "FP": 1,
+      "TN": 491,
+      "FN": 1,
+      "train_seconds": 11.3
+    }
+  ],
+  "kpi": {
+    "total_transactions": 284807,
+    "fraud_transactions": 492,
+    "fraud_rate": 0.1727,
+    "monitored_users": 200,
+    "suspicious_user_weeks": 96,
+    "high_risk_users": 10
+  },
+  "top_risk_users": [
+    {
+      "user": "E1042",
+      "events": 1485,
+      "suspicious_weeks": 7.0,
+      "max_prob": 1.0
+    },
+    {
+      "user": "E1064",
+      "events": 1159,
+      "suspicious_weeks": 13.0,
+      "max_prob": 1.0
+    },
+    {
+      "user": "E1019",
+      "events": 1039,
+      "suspicious_weeks": 13.0,
+      "max_prob": 1.0
+    },
+    {
+      "user": "E1077",
+      "events": 1540,
+      "suspicious_weeks": 7.0,
+      "max_prob": 1.0
+    },
+    {
+      "user": "E1155",
+      "events": 1231,
+      "suspicious_weeks": 13.0,
+      "max_prob": 1.0
+    },
+    {
+      "user": "E1131",
+      "events": 1485,
+      "suspicious_weeks": 7.0,
+      "max_prob": 1.0
+    },
+    {
+      "user": "E1110",
+      "events": 1089,
+      "suspicious_weeks": 13.0,
+      "max_prob": 1.0
+    },
+    {
+      "user": "E1058",
+      "events": 1281,
+      "suspicious_weeks": 7.0,
+      "max_prob": 0.999642
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+// SecureBig — Power BI DAX measures (import via Modeling > New measure)
+// FACT_TRANSACTIONS = the BEST model's full test fold (held-out data), so the
+// confusion matrix here reconciles exactly with results/model_metrics CSVs.
+
+Total Transactions (full dataset) =
+    LOOKUPVALUE ( DIM_DATASET_FACTS[value], DIM_DATASET_FACTS[fact], "dataset_rows" )
+Dataset Frauds (full dataset) =
+    LOOKUPVALUE ( DIM_DATASET_FACTS[value], DIM_DATASET_FACTS[fact], "dataset_frauds" )
+Dataset Fraud Rate % =
+    LOOKUPVALUE ( DIM_DATASET_FACTS[value], DIM_DATASET_FACTS[fact], "dataset_fraud_rate_pct" )
+
+Scored Transactions = COUNTROWS ( FACT_TRANSACTIONS )
+Fraud Count = CALCULATE ( [Scored Transactions], FACT_TRANSACTIONS[Class] = 1 )
+Fraud Rate % = DIVIDE ( [Fraud Count], [Scored Transactions], 0 ) * 100
+Avg Fraud Probability = AVERAGE ( FACT_TRANSACTIONS[fraud_prob] )
+High-Risk Txns = CALCULATE ( [Scored Transactions], FACT_TRANSACTIONS[prediction] = 1 )
+True Positives = CALCULATE ( [Scored Transactions], FACT_TRANSACTIONS[Class] = 1, FACT_TRANSACTIONS[prediction] = 1 )
+False Positives = CALCULATE ( [Scored Transactions], FACT_TRANSACTIONS[Class] = 0, FACT_TRANSACTIONS[prediction] = 1 )
+False Negatives = CALCULATE ( [Scored Transactions], FACT_TRANSACTIONS[Class] = 1, FACT_TRANSACTIONS[prediction] = 0 )
+Model Precision = DIVIDE ( [True Positives], [True Positives] + [False Positives], 0 )
+Model Recall = DIVIDE ( [True Positives], [True Positives] + [False Negatives], 0 )
+Model F1 = DIVIDE ( 2 * [Model Precision] * [Model Recall], [Model Precision] + [Model Recall], 0 )
+Suspicious User-Weeks = CALCULATE ( COUNTROWS ( FACT_USER_WEEK_FEATURES ), FACT_USER_WEEK_FEATURES[prediction] = 1 )
+Avg Suspicion Score = AVERAGE ( FACT_USER_WEEK_FEATURES[suspicion_prob] )
+High-Risk Users =
+COUNTROWS (
+    FILTER (
+        VALUES ( FACT_USER_WEEK_FEATURES[user] ),
+        CALCULATE ( MAX ( FACT_USER_WEEK_FEATURES[suspicion_prob] ) ) > 0.5
+    )
+)
+Best Model F1 =
+MAXX ( FACT_MODEL_RESULTS, FACT_MODEL_RESULTS[F1] )

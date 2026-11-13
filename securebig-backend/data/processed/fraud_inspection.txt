@@ -1,0 +1,16 @@
+SECUREBIG — DATASET 1 INSPECTION REPORT (ULB Credit Card Fraud)
+================================================================
+file            : C:\Users\Adarsh singh\.zcode\workspace\default\securebig-backend\data\raw\transactions\creditcard.csv
+rows x cols     : 284807 x 31
+columns         : Time, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16, V17, V18, V19, V20, V21, V22, V23, V24, V25, V26, V27, V28, Amount, Class
+dtypes          : {'Time': 'float64', 'V1': 'float64', 'V2': 'float64', 'V3': 'float64', 'V4': 'float64', 'V5': 'float64', 'V6': 'float64', 'V7': 'float64', 'V8': 'float64', 'V9': 'float64', 'V10': 'float64', 'V11': 'float64', 'V12': 'float64', 'V13': 'float64', 'V14': 'float64', 'V15': 'float64', 'V16': 'float64', 'V17': 'float64', 'V18': 'float64', 'V19': 'float64', 'V20': 'float64', 'V21': 'float64', 'V22': 'float64', 'V23': 'float64', 'V24': 'float64', 'V25': 'float64', 'V26': 'float64', 'V27': 'float64', 'V28': 'float64', 'Amount': 'float64', 'Class': 'int64'}
+missing values  : 0 total (per col: none)
+duplicate rows  : 1081
+class 0 (legit): 284315
+class 1 (fraud): 492
+fraud rate      : 0.173%  (imbalance ratio 1:577)
+amount stats    : min=0.00 mean=88.35 max=25691.16
+fraud amounts   : min=0.00 mean=122.21 max=2125.87
+time span       : 0s .. 172792s  (~48.0 hours)
+V1..V28         : PCA features (pre-transformed by source dataset; not interpretable directly)
+note            : V-features are anonymized by the source (PCA). Class is the target.

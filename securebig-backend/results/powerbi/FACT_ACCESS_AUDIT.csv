@@ -1,0 +1,13 @@
+role,zone,decision,note
+ADMIN,masked_data,GRANT,ACL matrix lookup
+ADMIN,anonymized_data,GRANT,ACL matrix lookup
+ADMIN,restricted_data,GRANT,ACL matrix lookup
+SECURITY_ANALYST,masked_data,GRANT,ACL matrix lookup
+SECURITY_ANALYST,anonymized_data,GRANT,ACL matrix lookup
+SECURITY_ANALYST,restricted_data,DENY,ACL matrix lookup
+DATA_ANALYST,masked_data,DENY,ACL matrix lookup
+DATA_ANALYST,anonymized_data,GRANT,ACL matrix lookup
+DATA_ANALYST,restricted_data,DENY,ACL matrix lookup
+GUEST,masked_data,DENY,ACL matrix lookup
+GUEST,anonymized_data,DENY,ACL matrix lookup
+GUEST,restricted_data,DENY,ACL matrix lookup

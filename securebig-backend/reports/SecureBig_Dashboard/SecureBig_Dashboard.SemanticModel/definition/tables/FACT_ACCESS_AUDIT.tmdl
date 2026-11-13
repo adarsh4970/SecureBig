@@ -1,0 +1,46 @@
+table FACT_ACCESS_AUDIT
+	lineageTag: 28bf779b-5af0-4491-9193-481d3d00a0dc
+
+	measure 'Audit Decision Count' = COUNTROWS ( FACT_ACCESS_AUDIT )
+		formatString: #,0
+		lineageTag: a7ff4e12-a87c-4551-9b37-d3754b50c217
+
+	measure 'GRANT Count' = CALCULATE ( COUNTROWS ( FACT_ACCESS_AUDIT ), FACT_ACCESS_AUDIT[decision] = "GRANT" )
+		formatString: #,0
+		lineageTag: 4991176e-0aa3-4fe8-af8b-d69af0c355bc
+
+	measure 'DENY Count' = CALCULATE ( COUNTROWS ( FACT_ACCESS_AUDIT ), FACT_ACCESS_AUDIT[decision] = "DENY" )
+		formatString: #,0
+		lineageTag: d68d92ef-7e72-4787-9627-53e3778fe74a
+
+	column role
+		dataType: string
+		lineageTag: 2021a718-d3b6-46aa-9f6b-7cca38e03633
+		sourceColumn: role
+
+	column zone
+		dataType: string
+		lineageTag: c6a7c919-f457-40b0-9550-5c5422dfe78b
+		sourceColumn: zone
+
+	column decision
+		dataType: string
+		lineageTag: cc241e42-4039-41f1-a524-e1e8d5e4adbc
+		sourceColumn: decision
+
+	column note
+		dataType: string
+		lineageTag: 74672ade-eb5e-4f58-b948-84a02e2f6564
+		sourceColumn: note
+
+	partition FACT_ACCESS_AUDIT = m
+		mode: import
+		source =
+				let
+					Source = Excel.Workbook(File.Contents("C:\\Users\\Adarsh singh\\.zcode\\workspace\\default\\securebig-backend\\results\\powerbi\\SecureBig_Tables.xlsx"), null, false),
+					Sheet = Source{[Item="FACT_ACCESS_AUDIT",Kind="Sheet"]}[Data],
+					Promoted = Table.PromoteHeaders(Sheet, [PromoteAllScalars=true]),
+					ChangedType = Table.TransformColumnTypes(Promoted,{{"role", type text}, {"zone", type text}, {"decision", type text}, {"note", type text}})
+				in
+					ChangedType
+

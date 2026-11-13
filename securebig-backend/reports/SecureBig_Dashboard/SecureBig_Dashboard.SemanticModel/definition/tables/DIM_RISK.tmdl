@@ -1,0 +1,29 @@
+table DIM_RISK
+	lineageTag: edb7bd2b-d67d-4401-8957-7d40037ca5d1
+
+	column RiskLevel
+		dataType: string
+		lineageTag: d850ea8e-b398-47b2-aa38-bc359f76bb0f
+		sourceColumn: RiskLevel
+
+	column MinScore
+		dataType: int64
+		lineageTag: fce9af06-2882-43a4-98a6-67a858514089
+		sourceColumn: MinScore
+
+	column MaxScore
+		dataType: int64
+		lineageTag: c78501ca-2c2c-4df5-893c-5e701562ed50
+		sourceColumn: MaxScore
+
+	partition DIM_RISK = m
+		mode: import
+		source =
+				let
+					Source = Excel.Workbook(File.Contents("C:\\Users\\Adarsh singh\\.zcode\\workspace\\default\\securebig-backend\\results\\powerbi\\SecureBig_Tables.xlsx"), null, false),
+					Sheet = Source{[Item="DIM_RISK",Kind="Sheet"]}[Data],
+					Promoted = Table.PromoteHeaders(Sheet, [PromoteAllScalars=true]),
+					ChangedType = Table.TransformColumnTypes(Promoted,{{"RiskLevel", type text}, {"MinScore", Int64.Type}, {"MaxScore", Int64.Type}})
+				in
+					ChangedType
+

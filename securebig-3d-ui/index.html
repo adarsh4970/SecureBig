@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SECUREBIG — 3D Security Intelligence Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg-0:#04060d;
+    --bg-1:#070b16;
+    --glass:rgba(13,20,38,.55);
+    --glass-brd:rgba(0,240,255,.14);
+    --cyan:#00f0ff;
+    --purple:#a855f7;
+    --red:#ff3b5c;
+    --amber:#ffb020;
+    --green:#00ff9d;
+    --txt:#e6f1ff;
+    --muted:#8b9bb4;
+    --radius:16px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(123,47,247,.14), transparent 60%),
+      radial-gradient(1000px 500px at -10% 30%, rgba(0,240,255,.10), transparent 60%),
+      linear-gradient(180deg,var(--bg-0),var(--bg-1) 40%,var(--bg-0));
+    color:var(--txt);
+    font-family:'Rajdhani',sans-serif;
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  ::selection{background:rgba(0,240,255,.25)}
+
+  /* ---------- overlays ---------- */
+  .grid-overlay{
+    position:fixed;inset:0;pointer-events:none;z-index:1;
+    background-image:
+      linear-gradient(rgba(0,240,255,.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,240,255,.035) 1px, transparent 1px);
+    background-size:56px 56px;
+    mask-image:radial-gradient(ellipse at 50% 0%, black 30%, transparent 75%);
+    -webkit-mask-image:radial-gradient(ellipse at 50% 0%, black 30%, transparent 75%);
+  }
+  .scanline{
+    position:fixed;inset:0;pointer-events:none;z-index:2;opacity:.5;
+    background:repeating-linear-gradient(0deg, rgba(255,255,255,.015) 0 1px, transparent 1px 4px);
+  }
+
+  /* ---------- loader ---------- */
+  #loader{
+    position:fixed;inset:0;z-index:100;background:var(--bg-0);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;
+    transition:opacity .6s ease, visibility .6s;
+  }
+  #loader.hidden{opacity:0;visibility:hidden}
+  .loader-logo{font-family:'Orbitron';font-size:26px;letter-spacing:8px;color:var(--cyan);text-shadow:0 0 24px rgba(0,240,255,.6)}
+  .loader-bar{width:240px;height:3px;background:rgba(0,240,255,.12);border-radius:99px;overflow:hidden}
+  .loader-bar i{display:block;height:100%;width:40%;border-radius:99px;background:linear-gradient(90deg,var(--cyan),var(--purple));animation:scan 1.1s ease-in-out infinite alternate}
+  @keyframes scan{from{transform:translateX(-60%)}to{transform:translateX(260%)}}
+  .loader-sub{font-size:13px;letter-spacing:4px;color:var(--muted);text-transform:uppercase}
+
+  /* ---------- nav ---------- */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    display:flex;align-items:center;gap:28px;
+    padding:14px 34px;
+    background:rgba(6,10,20,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(0,240,255,.10);
+  }
+  .brand{display:flex;align-items:center;gap:12px;font-family:'Orbitron';font-weight:700;letter-spacing:3px;font-size:15px}
+  .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--cyan);box-shadow:0 0 14px var(--cyan);animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .brand em{color:var(--cyan);font-style:normal}
+  .nav-links{display:flex;gap:6px;margin-left:auto}
+  .nav-links a{
+    color:var(--muted);text-decoration:none;font-weight:600;font-size:13.5px;letter-spacing:1.6px;text-transform:uppercase;
+    padding:8px 14px;border-radius:8px;transition:.25s;
+  }
+  .nav-links a:hover{color:var(--cyan);background:rgba(0,240,255,.07)}
+  .nav-status{display:flex;align-items:center;gap:9px;font-size:12px;letter-spacing:2px;color:var(--green);border:1px solid rgba(0,255,157,.25);padding:6px 12px;border-radius:99px;background:rgba(0,255,157,.05)}
+  .nav-status .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:pulse 1.6s infinite}
+  #clock{font-family:'Orbitron';font-size:12.5px;color:var(--muted);letter-spacing:2px;min-width:72px;text-align:right}
+
+  /* ---------- layout ---------- */
+  main{position:relative;z-index:3;max-width:1440px;margin:0 auto;padding:0 34px}
+  section{padding:64px 0 8px}
+  .sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:26px;flex-wrap:wrap}
+  .sec-head h2{font-family:'Orbitron';font-size:24px;letter-spacing:4px;font-weight:700}
+  .sec-head .tag{font-size:12px;letter-spacing:3px;color:var(--cyan);border:1px solid rgba(0,240,255,.3);padding:4px 12px;border-radius:99px;background:rgba(0,240,255,.06);text-transform:uppercase}
+  .sec-head p{color:var(--muted);font-size:15px;width:100%}
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.visible{opacity:1;transform:none}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;min-height:92vh;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:20px;padding-top:120px}
+  #globe-container{position:relative;width:100%;height:640px;perspective:1000px}
+  #globe-container canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+  .hero-eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12.5px;letter-spacing:4px;color:var(--cyan);text-transform:uppercase;margin-bottom:18px}
+  .hero-eyebrow::before{content:"";width:34px;height:1px;background:linear-gradient(90deg,var(--cyan),transparent)}
+  h1{font-family:'Orbitron';font-size:clamp(34px,4.6vw,62px);line-height:1.12;letter-spacing:2px;font-weight:900}
+  h1 .glow{color:var(--cyan);text-shadow:0 0 32px rgba(0,240,255,.55)}
+  h1 .grad{background:linear-gradient(90deg,var(--purple),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero-sub{color:var(--muted);font-size:17.5px;max-width:520px;margin:22px 0 30px;line-height:1.65}
+  .hero-sub b{color:var(--txt)}
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap}
+  .btn{
+    font-family:'Rajdhani';font-weight:700;font-size:15px;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;
+    padding:14px 28px;border-radius:12px;transition:.3s;position:relative;overflow:hidden;
+  }
+  .btn-primary{color:#031018;background:linear-gradient(90deg,var(--cyan),#69e6ff);box-shadow:0 0 28px rgba(0,240,255,.35)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 44px rgba(0,240,255,.55)}
+  .btn-ghost{color:var(--cyan);border:1px solid rgba(0,240,255,.4);background:rgba(0,240,255,.05)}
+  .btn-ghost:hover{background:rgba(0,240,255,.12);transform:translateY(-2px)}
+  .hero-badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:34px}
+  .chip{font-size:12px;letter-spacing:2px;color:var(--muted);border:1px solid rgba(139,155,180,.25);padding:6px 13px;border-radius:99px;text-transform:uppercase}
+  .chip b{color:var(--cyan)}
+
+  /* ---------- KPI ---------- */
+  .kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin:10px 0 30px}
+  .kpi{
+    --rx:0deg;--ry:0deg;
+    background:var(--glass);border:1px solid var(--glass-brd);border-radius:var(--radius);
+    padding:20px 18px;position:relative;overflow:hidden;
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    transform:perspective(700px) rotateX(var(--rx)) rotateY(var(--ry));
+    transition:transform .18s ease,border-color .3s,box-shadow .3s;
+  }
+  .kpi:hover{border-color:rgba(0,240,255,.4);box-shadow:0 18px 44px rgba(0,0,0,.45),0 0 30px rgba(0,240,255,.08)}
+  .kpi::after{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent,var(--cyan)),transparent);opacity:.8}
+  .kpi .label{font-size:11.5px;letter-spacing:2.4px;color:var(--muted);text-transform:uppercase;margin-bottom:10px}
+  .kpi .value{font-family:'Orbitron';font-size:26px;font-weight:700;color:var(--txt)}
+  .kpi .delta{font-size:13px;margin-top:8px;font-weight:600}
+  .d-up{color:var(--green)} .d-warn{color:var(--amber)} .d-down{color:var(--red)} .d-info{color:var(--cyan)}
+
+  /* ---------- panels ---------- */
+  .panel{
+    background:var(--glass);border:1px solid var(--glass-brd);border-radius:var(--radius);
+    padding:22px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    position:relative;
+  }
+  .panel h3{font-family:'Orbitron';font-size:14.5px;letter-spacing:2.5px;font-weight:700;margin-bottom:4px;color:var(--txt)}
+  .panel .sub{font-size:12.5px;color:var(--muted);letter-spacing:1.2px;margin-bottom:16px}
+  .panel .corner{position:absolute;width:14px;height:14px;border-color:rgba(0,240,255,.5);border-style:solid;pointer-events:none}
+  .corner.tl{top:-1px;left:-1px;border-width:2px 0 0 2px;border-radius:4px 0 0 0}
+  .corner.br{bottom:-1px;right:-1px;border-width:0 2px 2px 0;border-radius:0 0 4px 0}
+  .grid-2{display:grid;grid-template-columns:1.25fr .75fr;gap:18px}
+  .grid-2b{display:grid;grid-template-columns:.75fr 1.25fr;gap:18px}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+  .chart{width:100%;height:320px}
+  .chart-sm{width:100%;height:300px}
+
+  /* ---------- feed ---------- */
+  .feed{display:flex;flex-direction:column;gap:8px;max-height:392px;overflow:hidden;position:relative}
+  .feed-item{
+    display:grid;grid-template-columns:74px 1fr;gap:12px;align-items:start;
+    background:rgba(8,13,26,.6);border:1px solid rgba(139,155,180,.12);border-left:3px solid var(--sev,#00f0ff);
+    padding:10px 12px;border-radius:10px;font-size:13.5px;
+    animation:slideIn .4s ease;
+  }
+  @keyframes slideIn{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+  .feed-item .sev{font-family:'Orbitron';font-size:10px;letter-spacing:1px;padding:4px 0;text-align:center;border-radius:6px;background:rgba(255,255,255,.04);color:var(--sev)}
+  .feed-item .msg b{color:var(--cyan)}
+  .feed-item .time{color:var(--muted);font-size:11.5px;letter-spacing:1px;margin-top:2px}
+
+  /* ---------- table ---------- */
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{font-size:11.5px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-align:left;padding:10px 12px;border-bottom:1px solid rgba(0,240,255,.14)}
+  td{padding:12px;border-bottom:1px solid rgba(139,155,180,.09);color:var(--txt)}
+  tr:hover td{background:rgba(0,240,255,.035)}
+  .badge{font-size:11px;font-weight:700;letter-spacing:1.5px;padding:4px 12px;border-radius:99px;text-transform:uppercase}
+  .b-high{color:var(--red);background:rgba(255,59,92,.12);border:1px solid rgba(255,59,92,.35)}
+  .b-med{color:var(--amber);background:rgba(255,176,32,.10);border:1px solid rgba(255,176,32,.35)}
+  .b-low{color:var(--green);background:rgba(0,255,157,.10);border:1px solid rgba(0,255,157,.3)}
+  .mono{font-family:'Orbitron';font-size:12.5px;color:var(--cyan)}
+
+  /* ---------- privacy ---------- */
+  .priv-code{
+    background:rgba(3,7,15,.8);border:1px solid rgba(0,240,255,.12);border-radius:12px;
+    padding:16px 18px;font-family:'Consolas','Courier New',monospace;font-size:13.5px;line-height:2;color:#9fb6d4;
+    overflow-x:auto;white-space:nowrap;
+  }
+  .priv-code .k{color:var(--purple)} .priv-code .v{color:var(--green)} .priv-code .m{color:var(--cyan)} .priv-code .x{color:var(--red)}
+  .role-row{display:grid;grid-template-columns:180px 1fr 120px;gap:14px;align-items:center;padding:13px 4px;border-bottom:1px solid rgba(139,155,180,.1)}
+  .role-row:last-child{border-bottom:none}
+  .role{font-family:'Orbitron';font-size:12.5px;letter-spacing:2px;color:var(--txt)}
+  .perm{font-size:13.5px;color:var(--muted)}
+
+  /* ---------- footer ---------- */
+  footer{position:relative;z-index:3;margin-top:70px;padding:34px;text-align:center;color:var(--muted);font-size:13.5px;letter-spacing:1.5px;border-top:1px solid rgba(0,240,255,.08)}
+  footer b{color:var(--cyan)}
+  .note{
+    margin-top:34px;display:inline-block;font-size:12px;letter-spacing:2px;color:var(--amber);
+    border:1px dashed rgba(255,176,32,.4);padding:8px 16px;border-radius:10px;background:rgba(255,176,32,.05);text-transform:uppercase;
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width:1180px){
+    .kpi-grid{grid-template-columns:repeat(3,1fr)}
+    .grid-2,.grid-2b,.grid-3{grid-template-columns:1fr}
+  }
+  @media (max-width:900px){
+    .hero{grid-template-columns:1fr;min-height:auto;padding-top:110px}
+    #globe-container{height:420px;order:-1}
+    .nav-links{display:none}
+  }
+  @media (max-width:640px){
+    .kpi-grid{grid-template-columns:repeat(2,1fr)}
+    main{padding:0 18px}
+    nav{padding:12px 18px}
+    #clock{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+    .reveal{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">SECUREBIG</div>
+  <div class="loader-bar"><i></i></div>
+  <div class="loader-sub">Initializing security grid…</div>
+</div>
+
+<div class="grid-overlay"></div>
+<div class="scanline"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="brand"><span class="dot"></span>SECURE<em>BIG</em>&nbsp;// SOC</div>
+  <div class="nav-links">
+    <a href="#overview">Overview</a>
+    <a href="#fraud">Fraud</a>
+    <a href="#insider">Insider Threat</a>
+    <a href="#ml">ML Lab</a>
+    <a href="#privacy">Privacy</a>
+  </div>
+  <span id="clock">--:--:--</span>
+  <div class="nav-status"><span class="dot"></span>LIVE</div>
+</nav>
+
+<main>
+  <!-- ================= HERO ================= -->
+  <section class="hero" id="overview">
+    <div class="hero-content reveal">
+      <div class="hero-eyebrow">Privacy-Preserving Big Data Analytics · CBCA293</div>
+      <h1>SECURITY<br /><span class="glow">INTELLIGENCE</span><br /><span class="grad">CENTER</span></h1>
+      <p class="hero-sub">
+        Real-time 3D command view for the <b>SecureBig</b> academic prototype —
+        detecting <b>financial fraud</b> and <b>insider threats</b> across HDFS-hosted
+        big data using Spark MLlib, Hive rules and Pig log processing.
+      </p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#fraud">Launch Analysis</a>
+        <a class="btn btn-ghost" href="#ml">ML Model Lab</a>
+      </div>
+      <div class="hero-badges">
+        <span class="chip">PIPELINE <b>HDFS → HIVE → PIG → SPARK</b></span>
+        <span class="chip">ENGINE <b>SPARK MLlib ×5</b></span>
+        <span class="chip">PRIVACY <b>MASK · PSEUDO · HASH</b></span>
+      </div>
+    </div>
+    <div id="globe-container" class="reveal"></div>
+  </section>
+
+  <!-- ================= KPI ================= -->
+  <section>
+    <div class="sec-head reveal">
+      <h2>EXECUTIVE OVERVIEW</h2>
+      <span class="tag">Live Snapshot</span>
+      <p>Key risk indicators across the fraud and insider-threat pipelines. Transaction figures reflect the ULB credit-card dataset (284,807 / 492); user-risk figures are simulated demo values.</p>
+    </div>
+    <div class="kpi-grid reveal">
+      <div class="kpi tilt" style="--accent:#00f0ff"><div class="label">Total Transactions</div><div class="value" data-count="284807">0</div><div class="delta d-info">HDFS · /securebig/raw</div></div>
+      <div class="kpi tilt" style="--accent:#ff3b5c"><div class="label">Fraudulent Txns</div><div class="value" data-count="492">0</div><div class="delta d-down">Class 1 · imbalanced 0.17%</div></div>
+      <div class="kpi tilt" style="--accent:#ffb020"><div class="label">Fraud Rate %</div><div class="value" data-count="0.173" data-decimals="3" data-suffix="%">0</div><div class="delta d-warn">492 / 284,807</div></div>
+      <div class="kpi tilt" style="--accent:#a855f7"><div class="label">Monitored Users</div><div class="value" data-count="1000">0</div><div class="delta d-info">CERT-style activity logs</div></div>
+      <div class="kpi tilt" style="--accent:#ff3b5c"><div class="label">Suspicious Users</div><div class="value" data-count="37">0</div><div class="delta d-down">Risk score ≥ 61</div></div>
+      <div class="kpi tilt" style="--accent:#00ff9d"><div class="label">Blocked / Flagged</div><div class="value" data-count="214">0</div><div class="delta d-up">ACL denials + rules</div></div>
+    </div>
+  </section>
+
+  <!-- ================= FRAUD ================= -->
+  <section id="fraud">
+    <div class="sec-head reveal">
+      <h2>FINANCIAL FRAUD INTELLIGENCE</h2>
+      <span class="tag">Dataset 1 · ULB Credit Card</span>
+      <p>Transaction stream analytics over 284,807 European card transactions. Volume pattern and risk split shown below are layout samples — replace with your exported Spark aggregates.</p>
+    </div>
+    <div class="grid-2 reveal">
+      <div class="panel">
+        <span class="corner tl"></span><span class="corner br"></span>
+        <h3>FRAUD TIMELINE</h3>
+        <div class="sub">Transaction volume vs detected fraud · 48h window</div>
+        <div id="chart-trend" class="chart"></div>
+      </div>
+      <div class="panel">
+        <span class="corner tl"></span><span class="corner br"></span>
+        <h3>RISK DISTRIBUTION</h3>
+        <div class="sub">Hive rule-engine scoring</div>
+        <div id="chart-risk" class="chart"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= INSIDER ================= -->
+  <section id="insider">
+    <div class="sec-head reveal">
+      <h2>INSIDER THREAT INTELLIGENCE</h2>
+      <span class="tag">Dataset 2 · User Activity Logs</span>
+      <p>Behavioral analytics from logon / file / device events. Users are pseudonymized (USR-###) per the privacy layer. Feed entries are simulated SOC events for UI demonstration.</p>
+    </div>
+    <div class="grid-2b reveal">
+      <div class="panel">
+        <span class="corner tl"></span><span class="corner br"></span>
+        <h3>THREAT EVENTS BY HOUR</h3>
+        <div class="sub">After-hours spike detection</div>
+        <div id="chart-hourly" class="chart"></div>
+      </div>
+      <div class="panel">
+        <span class="corner tl"></span><span class="corner br"></span>
+        <h3>LIVE SECURITY EVENT FEED</h3>
+        <div class="sub">Pig-processed audit stream</div>
+        <div class="feed" id="feed"></div>
+      </div>
+    </div>
+    <div class="panel reveal" style="margin-top:18px">
+      <span class="corner tl"></span><span class="corner br"></span>
+      <h3>TOP RISK USERS — DRILL TABLE</h3>
+      <div class="sub">Aggregated feature table exported from Spark</div>
+      <table>
+        <thead><tr><th>User (pseudonymized)</th><th>Events</th><th>Sensitive Access</th><th>After-Hours</th><th>Failed Logins</th><th>Risk Score</th><th>Level</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">USR-042</td><td>1,284</td><td>96</td><td>211</td><td>34</td><td><b>87</b></td><td><span class="badge b-high">High</span></td></tr>
+          <tr><td class="mono">USR-017</td><td>943</td><td>58</td><td>164</td><td>22</td><td><b>74</b></td><td><span class="badge b-high">High</span></td></tr>
+          <tr><td class="mono">USR-005</td><td>1,102</td><td>31</td><td>88</td><td>9</td><td><b>58</b></td><td><span class="badge b-med">Medium</span></td></tr>
+          <tr><td class="mono">USR-233</td><td>766</td><td>24</td><td>71</td><td>6</td><td><b>52</b></td><td><span class="badge b-med">Medium</span></td></tr>
+          <tr><td class="mono">USR-118</td><td>512</td><td>6</td><td>12</td><td>2</td><td><b>23</b></td><td><span class="badge b-low">Low</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= ML LAB ================= -->
+  <section id="ml">
+    <div class="sec-head reveal">
+      <h2>ML MODEL LAB</h2>
+      <span class="tag">Spark MLlib · 5 Models</span>
+      <p>Comparison workspace for Logistic Regression, Decision Tree, Random Forest, Naive Bayes and GBT. Bars and radar below are <b>sample layout values</b> — connect your real MLlib evaluation export here (never report invented metrics).</p>
+    </div>
+    <div class="grid-2 reveal">
+      <div class="panel">
+        <span class="corner tl"></span><span class="corner br"></span>
+        <h3>MODEL COMPARISON — F1</h3>
+        <div class="sub">Sample layout values · replace with real results</div>
+        <div id="chart-models" class="chart"></div>
+      </div>
+      <div class="panel">
+        <span class="corner tl"></span><span class="corner br"></span>
+        <h3>METRIC PROFILE — RADAR</h3>
+        <div class="sub">Random Forest vs GBT · sample</div>
+        <div id="chart-radar" class="chart"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PRIVACY ================= -->
+  <section id="privacy">
+    <div class="sec-head reveal">
+      <h2>PRIVACY &amp; ACCESS MONITOR</h2>
+      <span class="tag">Data Protection Layer</span>
+      <p>Privacy-preserving transforms applied before analytics reach analysts, plus the role-based access matrix enforced through HDFS ACLs.</p>
+    </div>
+    <div class="grid-3 reveal">
+      <div class="panel">
+        <span class="corner tl"></span><span class="corner br"></span>
+        <h3>MASKING</h3>
+        <div class="sub">Identity minimization</div>
+        <div class="priv-code">
+          <span class="k">email</span> : <span class="x">john.doe@example.com</span><br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br />
+          <span class="k">masked</span>: <span class="m">j***@example.com</span><br /><br />
+          <span class="k">card</span>&nbsp;&nbsp; : <span class="x">4539 88** **** 1234</span><br />
+          <span class="k">risk</span>&nbsp;&nbsp; : <span class="v">fields never leave secure zone</span>
+        </div>
+      </div>
+      <div class="panel">
+        <span class="corner tl"></span><span class="corner br"></span>
+        <h3>PSEUDONYMIZATION + HASH</h3>
+        <div class="sub">Reversible vs one-way</div>
+        <div class="priv-code">
+          <span class="k">user</span>&nbsp;&nbsp;&nbsp;: <span class="x">Rohit Sharma</span> → <span class="m">USR_001</span><br />
+          <span class="k">mapping</span>: kept in <span class="v">/secure/restricted</span><br /><br />
+          <span class="k">sha256</span>(<span class="x">device-id</span>)<br />
+          &nbsp;= <span class="v">9f2c…e81a</span> <span class="m">// irreversible</span>
+        </div>
+      </div>
+      <div class="panel">
+        <span class="corner tl"></span><span class="corner br"></span>
+        <h3>ACCESS CONTROL MATRIX</h3>
+        <div class="sub">HDFS ACL enforcement</div>
+        <div class="role-row"><span class="role" style="color:#00f0ff">ADMIN</span><span class="perm">Full access · raw + secure zones</span><span class="badge b-low">Grant</span></div>
+        <div class="role-row"><span class="role" style="color:#a855f7">SEC_ANALYST</span><span class="perm">Security logs + reports</span><span class="badge b-low">Grant</span></div>
+        <div class="role-row"><span class="role" style="color:#ffb020">DATA_ANALYST</span><span class="perm">Anonymized analytical data only</span><span class="badge b-med">Limited</span></div>
+        <div class="role-row"><span class="role" style="color:#ff3b5c">GUEST</span><span class="perm">No clearance</span><span class="badge b-high">Denied</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div style="text-align:center">
+    <span class="note">UI concept — charts &amp; feed use sample values pending real Spark MLlib exports</span>
+  </div>
+</main>
+
+<footer>
+  <b>SECUREBIG</b> · Privacy-Preserving Big Data Analytics Framework · Academic prototype for CBCA293 — Security &amp; Privacy for Big Data Analytics<br />
+  Not a production SOC · All identifiers masked / pseudonymized
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<script>
+/* ============ LOADER ============ */
+(function(){
+  var done=false;
+  function hide(){ if(done)return; done=true; document.getElementById('loader').classList.add('hidden'); }
+  window.addEventListener('load',function(){ setTimeout(hide,700); });
+  setTimeout(hide,4000);
+})();
+
+/* ============ CLOCK ============ */
+(function(){
+  var el=document.getElementById('clock');
+  function tick(){ var d=new Date(); el.textContent=[d.getHours(),d.getMinutes(),d.getSeconds()].map(function(n){return String(n).padStart(2,'0');}).join(':'); }
+  tick(); setInterval(tick,1000);
+})();
+
+/* ============ 3D GLOBE (Three.js) ============ */
+(function(){
+  if(!window.THREE) return;
+  var container=document.getElementById('globe-container');
+  var scene=new THREE.Scene();
+  var camera=new THREE.PerspectiveCamera(55,container.clientWidth/container.clientHeight,0.1,1000);
+  camera.position.z=30;
+  var renderer=new THREE.WebGLRenderer({alpha:true,antialias:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setSize(container.clientWidth,container.clientHeight);
+  container.appendChild(renderer.domElement);
+
+  var group=new THREE.Group(); scene.add(group);
+  var R=10,N=340,pts=[],i,j;
+  for(i=0;i<N;i++){
+    var t=Math.acos(2*Math.random()-1), p=Math.random()*2*Math.PI;
+    pts.push(new THREE.Vector3(R*Math.sin(t)*Math.cos(p),R*Math.sin(t)*Math.sin(p),R*Math.cos(t)));
+  }
+  var pos=new Float32Array(N*3);
+  pts.forEach(function(v,idx){ pos[idx*3]=v.x; pos[idx*3+1]=v.y; pos[idx*3+2]=v.z; });
+  var geo=new THREE.BufferGeometry(); geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  group.add(new THREE.Points(geo,new THREE.PointsMaterial({color:0x00f0ff,size:0.13,transparent:true,opacity:0.95})));
+
+  var lp=[];
+  for(i=0;i<N;i++)for(j=i+1;j<N;j++){
+    if(pts[i].distanceTo(pts[j])<2.3){ lp.push(pts[i].x,pts[i].y,pts[i].z,pts[j].x,pts[j].y,pts[j].z); }
+  }
+  var lgeo=new THREE.BufferGeometry(); lgeo.setAttribute('position',new THREE.BufferAttribute(new Float32Array(lp),3));
+  group.add(new THREE.LineSegments(lgeo,new THREE.LineBasicMaterial({color:0x00f0ff,transparent:true,opacity:0.10})));
+
+  group.add(new THREE.Mesh(new THREE.IcosahedronGeometry(R+0.5,1),new THREE.MeshBasicMaterial({color:0x7b2ff7,wireframe:true,transparent:true,opacity:0.07})));
+
+  var ring1=new THREE.Mesh(new THREE.TorusGeometry(R+3.6,0.02,8,140),new THREE.MeshBasicMaterial({color:0x00f0ff,transparent:true,opacity:0.28}));
+  ring1.rotation.x=Math.PI/2.4; group.add(ring1);
+  var ring2=new THREE.Mesh(new THREE.TorusGeometry(R+5.6,0.02,8,140),new THREE.MeshBasicMaterial({color:0xa855f7,transparent:true,opacity:0.2}));
+  ring2.rotation.x=Math.PI/1.7; ring2.rotation.y=0.5; group.add(ring2);
+
+  var markers=[],mc=[0xff3b5c,0xffb020,0x00ff9d];
+  for(i=0;i<11;i++){
+    var a=Math.acos(2*Math.random()-1), b=Math.random()*2*Math.PI;
+    var m=new THREE.Mesh(new THREE.SphereGeometry(0.24,16,16),new THREE.MeshBasicMaterial({color:mc[i%3]}));
+    m.position.set((R+0.3)*Math.sin(a)*Math.cos(b),(R+0.3)*Math.sin(a)*Math.sin(b),(R+0.3)*Math.cos(a));
+    m.userData.phase=Math.random()*Math.PI*2; group.add(m); markers.push(m);
+  }
+
+  var sN=520,sp=new Float32Array(sN*3);
+  for(i=0;i<sN;i++){ sp[i*3]=(Math.random()-0.5)*220; sp[i*3+1]=(Math.random()-0.5)*130; sp[i*3+2]=(Math.random()-0.5)*130-30; }
+  var sg=new THREE.BufferGeometry(); sg.setAttribute('position',new THREE.BufferAttribute(sp,3));
+  scene.add(new THREE.Points(sg,new THREE.PointsMaterial({color:0x3a5a8c,size:0.36,transparent:true,opacity:0.75})));
+
+  var mx=0,my=0,rx=0,ry=0;
+  window.addEventListener('mousemove',function(e){
+    mx=e.clientX/window.innerWidth-0.5; my=e.clientY/window.innerHeight-0.5;
+  });
+
+  var clock=new THREE.Clock();
+  (function animate(){
+    requestAnimationFrame(animate);
+    var t=clock.getElapsedTime();
+    group.rotation.y+=0.0018;
+    rx+=((my*0.45)-rx)*0.04; ry+=((mx*0.7)-ry)*0.04;
+    group.rotation.x=rx; group.rotation.z=ry*0.25;
+    ring1.rotation.z=t*0.08; ring2.rotation.z=-t*0.05;
+    markers.forEach(function(m){ m.scale.setScalar(1+0.55*Math.sin(t*2.6+m.userData.phase)); });
+    renderer.render(scene,camera);
+  })();
+
+  window.addEventListener('resize',function(){
+    camera.aspect=container.clientWidth/container.clientHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(container.clientWidth,container.clientHeight);
+  });
+})();
+
+/* ============ TILT CARDS ============ */
+document.querySelectorAll('.tilt').forEach(function(card){
+  card.addEventListener('mousemove',function(e){
+    var r=card.getBoundingClientRect();
+    var x=(e.clientX-r.left)/r.width-0.5, y=(e.clientY-r.top)/r.height-0.5;
+    card.style.setProperty('--ry',(x*10)+'deg');
+    card.style.setProperty('--rx',(-y*10)+'deg');
+  });
+  card.addEventListener('mouseleave',function(){
+    card.style.setProperty('--rx','0deg'); card.style.setProperty('--ry','0deg');
+  });
+});
+
+/* ============ COUNTERS ============ */
+(function(){
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(!en.isIntersecting) return;
+      var el=en.target, target=parseFloat(el.dataset.count),
+          dec=parseInt(el.dataset.decimals||'0',10), suf=el.dataset.suffix||'';
+      var t0=null, dur=1600;
+      function step(ts){
+        if(!t0)t0=ts;
+        var k=Math.min((ts-t0)/dur,1); k=1-Math.pow(1-k,3);
+        el.textContent=(target*k).toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec})+suf;
+        if(k<1)requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+      io.unobserve(el);
+    });
+  },{threshold:0.4});
+  document.querySelectorAll('[data-count]').forEach(function(el){ io.observe(el); });
+})();
+
+/* ============ REVEAL ON SCROLL ============ */
+(function(){
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('visible'); io.unobserve(en.target);} });
+  },{threshold:0.12});
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+})();
+
+/* ============ LIVE FEED ============ */
+(function(){
+  var feed=document.getElementById('feed');
+  var EV=[
+    {s:'HIGH',c:'#ff3b5c',m:function(){return 'Unusual login — new IP <b>185.220.**.**</b> · '+uid();}},
+    {s:'HIGH',c:'#ff3b5c',m:function(){return 'Bulk download: <b>'+rnd(80,340)+' files</b> → removable media · '+uid();}},
+    {s:'HIGH',c:'#ff3b5c',m:function(){return 'Access DENIED by ACL — /secure/restricted/ · '+uid();}},
+    {s:'MED', c:'#ffb020',m:function(){return 'After-hours access — /secure/finance/*.csv · '+uid();}},
+    {s:'MED', c:'#ffb020',m:function(){return 'Failed logins ×<b>'+rnd(3,17)+'</b> in 10 min · '+uid();}},
+    {s:'MED', c:'#ffb020',m:function(){return 'High-value txn flagged by Hive rule R1 · <b>€'+rnd(900,9800)+'</b>';}},
+    {s:'LOW', c:'#00ff9d',m:function(){return 'USB device registered — policy compliant · '+uid();}},
+    {s:'LOW', c:'#00ff9d',m:function(){return 'Scheduled scan complete — 0 anomalies · zone B';}},
+    {s:'INFO',c:'#00f0ff',m:function(){return 'Pig job SUCCEEDED — audit_logs features → HDFS';}}
+  ];
+  function uid(){ return 'USR-'+String(rnd(1,999)).padStart(3,'0'); }
+  function rnd(a,b){ return Math.floor(a+Math.random()*(b-a+1)); }
+  function push(){
+    var e=EV[Math.floor(Math.random()*EV.length)];
+    var d=new Date();
+    var item=document.createElement('div');
+    item.className='feed-item';
+    item.style.setProperty('--sev',e.c);
+    item.innerHTML='<span class="sev">'+e.s+'</span><span><span class="msg">'+e.m()+'</span><div class="time">'+
+      [d.getHours(),d.getMinutes(),d.getSeconds()].map(function(n){return String(n).padStart(2,'0');}).join(':')+
+      ' · securebig/audit_logs</div></span>';
+    feed.insertBefore(item,feed.firstChild);
+    while(feed.children.length>11) feed.removeChild(feed.lastChild);
+  }
+  for(var i=0;i<7;i++) push();
+  setInterval(push,2400);
+})();
+
+/* ============ CHARTS (ECharts) ============ */
+(function(){
+  if(!window.echarts){
+    document.querySelectorAll('.chart').forEach(function(c){ c.innerHTML='<p style="color:#8b9bb4;padding:40px 20px;text-align:center">Charts unavailable — CDN offline. All other UI features still work.</p>'; });
+    return;
+  }
+  var TIP={backgroundColor:'rgba(8,13,26,.94)',borderColor:'rgba(0,240,255,.35)',textStyle:{color:'#e6f1ff',fontFamily:'Rajdhani'}};
+  var AX={axisLine:{lineStyle:{color:'rgba(139,155,180,.3)'}},axisLabel:{color:'#8b9bb4',fontFamily:'Rajdhani'},splitLine:{lineStyle:{color:'rgba(139,155,180,.08)'}}};
+
+  /* Trend — dual axis */
+  var hours=[],vol=[],fr=[];
+  for(var h=0;h<48;h++){
+    hours.push('H'+String(h%24).padStart(2,'0'));
+    vol.push(3200+Math.round(2200*Math.sin(h/4.5)+rnd0()*900));
+    fr.push(2+Math.round(rnd0()*9));
+  }
+  function rnd0(){ return Math.random(); }
+  echarts.init(document.getElementById('chart-trend')).setOption({
+    tooltip:Object.assign({trigger:'axis'},TIP),
+    legend:{textStyle:{color:'#8b9bb4'},top:0},
+    grid:{left:50,right:50,top:34,bottom:28},
+    xAxis:Object.assign({type:'category',data:hours,boundaryGap:false},AX),
+    yAxis:[Object.assign({type:'value',name:'Txns',nameTextStyle:{color:'#8b9bb4'}},AX),
+           Object.assign({type:'value',name:'Fraud',nameTextStyle:{color:'#ff3b5c'},splitLine:{show:false}},AX)],
+    series:[
+      {name:'Transactions',type:'line',smooth:true,symbol:'none',data:vol,
+       lineStyle:{color:'#00f0ff',width:2},
+       areaStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(0,240,255,.28)'},{offset:1,color:'rgba(0,240,255,0)'}])}},
+      {name:'Fraud flagged',type:'line',smooth:true,symbol:'none',yAxisIndex:1,data:fr,
+       lineStyle:{color:'#ff3b5c',width:2,type:'dotted'},
+       areaStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(255,59,92,.22)'},{offset:1,color:'rgba(255,59,92,0)'}])}}
+    ]
+  });
+
+  /* Risk donut */
+  echarts.init(document.getElementById('chart-risk')).setOption({
+    tooltip:Object.assign({},TIP),
+    legend:{bottom:0,textStyle:{color:'#8b9bb4'}},
+    series:[{
+      type:'pie',radius:['52%','74%'],center:['50%','44%'],
+      itemStyle:{borderColor:'#070b16',borderWidth:3},
+      label:{show:false},
+      data:[
+        {value:268410,name:'Low Risk (0–30)',itemStyle:{color:'#00ff9d'}},
+        {value:15200,name:'Medium Risk (31–60)',itemStyle:{color:'#ffb020'}},
+        {value:1197,name:'High Risk (61–100)',itemStyle:{color:'#ff3b5c'}}
+      ]
+    }],
+    graphic:[{type:'text',left:'center',top:'40%',style:{text:'RISK',fill:'#8b9bb4',font:'Orbitron 13px',textAlign:'center'}}]
+  });
+
+  /* Hourly threats */
+  var hh=[],ev=[];
+  for(h=0;h<24;h++){ hh.push(String(h).padStart(2,'0')+':00'); ev.push(h<6||h>20? 40+Math.round(rnd0()*55) : 5+Math.round(rnd0()*30)); }
+  echarts.init(document.getElementById('chart-hourly')).setOption({
+    tooltip:Object.assign({trigger:'axis'},TIP),
+    grid:{left:44,right:16,top:20,bottom:28},
+    xAxis:Object.assign({type:'category',data:hh},AX),
+    yAxis:Object.assign({type:'value'},AX),
+    series:[{type:'bar',data:ev,barWidth:'62%',
+      itemStyle:{color:function(p){ return p.value>40?'#ff3b5c':(p.value>20?'#ffb020':'#00f0ff'); },borderRadius:[5,5,0,0]}}]
+  });
+
+  /* Model comparison */
+  echarts.init(document.getElementById('chart-models')).setOption({
+    tooltip:Object.assign({trigger:'axis',axisPointer:{type:'shadow'}},TIP),
+    grid:{left:150,right:56,top:16,bottom:26},
+    xAxis:Object.assign({type:'value',max:1},AX),
+    yAxis:Object.assign({type:'category',
+      data:['Naive Bayes','Logistic Reg.','Decision Tree','Random Forest','GBT'],
+      axisLabel:{color:'#e6f1ff',fontFamily:'Rajdhani',fontSize:13}},AX),
+    series:[{type:'bar',barWidth:'55%',
+      data:[
+        {value:0.61,itemStyle:{color:'#3a5a8c'}},
+        {value:0.72,itemStyle:{color:'#00b5d8'}},
+        {value:0.81,itemStyle:{color:'#00f0ff'}},
+        {value:0.89,itemStyle:{color:'#7b60f0'}},
+        {value:0.91,itemStyle:{color:new echarts.graphic.LinearGradient(0,0,1,0,[{offset:0,color:'#a855f7'},{offset:1,color:'#00f0ff'}])}}
+      ],
+      label:{show:true,position:'right',color:'#8b9bb4',fontFamily:'Orbitron',fontSize:11,formatter:function(p){return p.value.toFixed(2);}},
+      itemStyle:{borderRadius:[0,6,6,0]}}]
+  });
+
+  /* Radar */
+  echarts.init(document.getElementById('chart-radar')).setOption({
+    tooltip:Object.assign({},TIP),
+    legend:{bottom:0,textStyle:{color:'#8b9bb4'}},
+    radar:{
+      indicator:[{name:'Accuracy',max:1},{name:'Precision',max:1},{name:'Recall',max:1},{name:'F1',max:1},{name:'ROC-AUC',max:1}],
+      radius:'62%',center:['50%','46%'],
+      axisName:{color:'#8b9bb4',fontFamily:'Rajdhani'},
+      splitLine:{lineStyle:{color:'rgba(139,155,180,.15)'}},
+      splitArea:{areaStyle:{color:['rgba(0,240,255,.02)','rgba(0,240,255,.05)']}},
+      axisLine:{lineStyle:{color:'rgba(139,155,180,.2)'}}
+    },
+    series:[{type:'radar',
+      data:[
+        {value:[0.94,0.86,0.83,0.84,0.93],name:'Random Forest',
+         lineStyle:{color:'#00f0ff'},areaStyle:{color:'rgba(0,240,255,.18)'},itemStyle:{color:'#00f0ff'}},
+        {value:[0.92,0.88,0.87,0.87,0.95],name:'GBT',
+         lineStyle:{color:'#a855f7'},areaStyle:{color:'rgba(168,85,247,.15)'},itemStyle:{color:'#a855f7'}}
+      ]}]
+  });
+
+  window.addEventListener('resize',function(){
+    document.querySelectorAll('.chart').forEach(function(c){
+      var inst=echarts.getInstanceByDom(c); if(inst) inst.resize();
+    });
+  });
+})();
+
+/* ============ REAL RESULTS OVERLAY ============
+   If dashboard_data.json (exported by the Spark backend) sits next to this
+   file, real MLlib metrics replace the sample layout values. Missing file =
+   samples stay (clearly labeled). */
+(async function(){
+  var D;
+  try{
+    var res=await fetch('dashboard_data.json',{cache:'no-store'});
+    if(!res.ok) return;
+    D=await res.json();
+    if(!D.kpi||!D.fraud_models) return;
+  }catch(e){ return; }
+
+  /* KPI cards */
+  var kv=[D.kpi.total_transactions,D.kpi.fraud_transactions,D.kpi.fraud_rate,
+          D.kpi.monitored_users,D.kpi.high_risk_users,D.kpi.suspicious_user_weeks];
+  document.querySelectorAll('.kpi-grid .kpi').forEach(function(card,i){
+    if(kv[i]==null) return;
+    var v=card.querySelector('.value');
+    v.dataset.count=kv[i];
+    if(kv[i]!==undefined) v.textContent=Number(kv[i]).toLocaleString('en-US',
+      {minimumFractionDigits:i===2?3:0,maximumFractionDigits:i===2?3:0})+(i===2?'%':'');
+  });
+  var subs=document.querySelectorAll('.kpi-grid .kpi .delta');
+  if(subs[4]) subs[4].textContent='ML suspicion > 0.5';
+  if(subs[5]) subs[5].textContent='flagged user-weeks';
+
+  /* model comparison bars — real fraud F1 */
+  var fm=D.fraud_models.slice().sort(function(a,b){return b.F1-a.F1;});
+  var pal=['#a855f7','#00f0ff','#00b5d8','#3a5a8c','#7b60f0'];
+  var instM=echarts.getInstanceByDom(document.getElementById('chart-models'));
+  if(instM) instM.setOption({
+    yAxis:{data:fm.map(function(m){return m.Model;})},
+    series:[{data:fm.map(function(m,i){return {value:+m.F1.toFixed(4),itemStyle:{color:pal[i%5]}};})}]
+  });
+
+  /* radar — real RF vs GBT (fraud dataset) */
+  function pick(name){ return D.fraud_models.find(function(m){return m.Model===name;}); }
+  var rf=pick('Random Forest'), gbt=pick('GBT');
+  var instR=echarts.getInstanceByDom(document.getElementById('chart-radar'));
+  if(instR&&rf&&gbt) instR.setOption({
+    series:[{data:[
+      {value:[rf.Accuracy,rf.Precision,rf.Recall,rf.F1,rf.ROC_AUC],name:'Random Forest',
+       lineStyle:{color:'#00f0ff'},areaStyle:{color:'rgba(0,240,255,.18)'},itemStyle:{color:'#00f0ff'}},
+      {value:[gbt.Accuracy,gbt.Precision,gbt.Recall,gbt.F1,gbt.ROC_AUC],name:'GBT',
+       lineStyle:{color:'#a855f7'},areaStyle:{color:'rgba(168,85,247,.15)'},itemStyle:{color:'#a855f7'}}
+    ]}]
+  });
+
+  /* top-risk-user table — real scored user-weeks */
+  var tb=document.querySelector('#insider table tbody');
+  if(tb&&D.top_risk_users){
+    var th=document.querySelectorAll('#insider table thead th');
+    if(th.length>=7){ th[2].textContent='Suspicious Weeks'; th[5].textContent='Suspicion'; }
+    tb.innerHTML=D.top_risk_users.map(function(u){
+      var score=Math.round(u.max_prob*100);
+      var lvl=score>60?'<span class="badge b-high">High</span>'
+             :score>30?'<span class="badge b-med">Medium</span>'
+             :'<span class="badge b-low">Low</span>';
+      return '<tr><td class="mono">'+u.user+'</td><td>'+u.events.toLocaleString('en-US')+
+             '</td><td>'+u.suspicious_weeks+' wk</td><td>—</td><td>—</td><td><b>'+score+
+             '</b></td><td>'+lvl+'</td></tr>';
+    }).join('');
+  }
+
+  var note=document.querySelector('.note');
+  if(note) note.textContent='Loaded real Spark MLlib results ('+ (D.engine||'Spark') +
+    ', seed '+D.seed+') — insider logs are the documented simulation';
+
+  /* update stale "sample" labels */
+  var mlSec=document.getElementById('ml');
+  if(mlSec){
+    var subs2=mlSec.querySelectorAll('.sub');
+    if(subs2[0]) subs2[0].textContent='Real values — Spark MLlib local run, seed 42';
+    if(subs2[1]) subs2[1].textContent='Random Forest vs GBT — fraud test fold (real)';
+    var p=mlSec.querySelector('.sec-head p');
+    if(p) p.textContent='Real comparison of the five MLlib models from the backend run '
+      +'(results/model_metrics/fraud_metrics.csv). NB scores low on PCA features; '
+      +'Random Forest leads F1 while accuracy alone is misleading at 0.17% fraud rate.';
+    var h=mlSec.querySelector('#chart-models')?.parentElement?.querySelector('h3');
+  }
+  var insSec=document.getElementById('insider');
+  if(insSec){
+    var isub=insSec.querySelectorAll('.sub');
+    if(isub[1]) isub[1].textContent='Simulated SOC stream — replace with Pig-processed feed';
+  }
+  var kpiHead=document.querySelector('.kpi-grid').previousElementSibling;
+  if(kpiHead&&kpiHead.querySelector) {
+    var kp=kpiHead.querySelector('p');
+    if(kp) kp.textContent='Key risk indicators — transaction figures are the real ULB dataset; '
+      +'user-risk figures come from the Spark MLlib insider pipeline run (simulated logs, seed 42).';
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "pgUserDetail",
+  "displayName": "User Detail",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280,
+  "pageBinding": {
+    "name": "pgUserDetailBinding",
+    "type": "Drillthrough",
+    "parameters": [
+      {
+        "name": "user"
+      }
+    ]
+  },
+  "type": "Drillthrough"
+}

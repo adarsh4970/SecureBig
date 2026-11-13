@@ -1,0 +1,11 @@
+user,scenario,weeks_active
+E1019,C_snooping,0-12
+E1042,A_exfil_usb,6-12
+E1058,B_new_ip_auth,4-10
+E1064,C_snooping,0-12
+E1077,A_exfil_usb,6-12
+E1103,B_new_ip_auth,4-10
+E1110,C_snooping,0-12
+E1131,A_exfil_usb,6-12
+E1155,C_snooping,0-12
+E1188,B_new_ip_auth,4-10

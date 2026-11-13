@@ -1,0 +1,15 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table FACT_TRANSACTIONS
+ref table FACT_MODEL_RESULTS
+ref table FACT_USER_WEEK_FEATURES
+ref table FACT_ACCESS_AUDIT
+ref table DIM_MODEL
+ref table DIM_RISK
+ref table DIM_DATASET_FACTS
+

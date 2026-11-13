@@ -1,0 +1,116 @@
+table FACT_MODEL_RESULTS
+	lineageTag: 09915963-60a6-49b1-86fb-555fa890a09e
+
+	measure 'Best Model F1' = MAXX ( FACT_MODEL_RESULTS, FACT_MODEL_RESULTS[F1] )
+		formatString: 0.000
+		lineageTag: ca8df46b-702b-436a-a23d-5add66a45359
+
+	measure 'Model F1 (by dataset)' = CALCULATE ( MAX ( FACT_MODEL_RESULTS[F1] ), FACT_MODEL_RESULTS[Dataset] = "Fraud" )
+		formatString: 0.000
+		lineageTag: 795246f8-32c0-412d-8777-ce3f9598e0c9
+
+	measure 'Model Precision (by dataset)' = MAX ( FACT_MODEL_RESULTS[Precision] )
+		formatString: 0.000
+		lineageTag: 833bef36-2349-4607-b291-c961b6e562e1
+
+	measure 'Model Recall (by dataset)' = MAX ( FACT_MODEL_RESULTS[Recall] )
+		formatString: 0.000
+		lineageTag: 978eda81-646e-46a2-a5cd-d4209184f378
+
+	measure 'Model ROC AUC (by dataset)' = MAX ( FACT_MODEL_RESULTS[ROC_AUC] )
+		formatString: 0.0000
+		lineageTag: 5faa786d-0294-4d14-889d-bf5cc97b26ab
+
+	measure 'Model TP' = MAX ( FACT_MODEL_RESULTS[TP] )
+		formatString: #,0
+		lineageTag: 31960274-e5d2-49d6-bf2b-fa984bac8ac3
+
+	measure 'Model FP' = MAX ( FACT_MODEL_RESULTS[FP] )
+		formatString: #,0
+		lineageTag: 38cba41b-0c10-4e3b-83ba-13db03ff5542
+
+	measure 'Model TN' = MAX ( FACT_MODEL_RESULTS[TN] )
+		formatString: #,0
+		lineageTag: 1d746819-9847-4973-ae46-333aea1bf336
+
+	measure 'Model FN' = MAX ( FACT_MODEL_RESULTS[FN] )
+		formatString: #,0
+		lineageTag: 6ed674e3-4e1b-403f-bec9-cdbef9d59989
+
+	column Dataset
+		dataType: string
+		lineageTag: e07ceefd-5783-4af3-a152-8a32e43b1f70
+		sourceColumn: Dataset
+
+	column Model
+		dataType: string
+		lineageTag: 9405034d-d721-4824-b146-8d1335776df3
+		sourceColumn: Model
+
+	column Accuracy
+		dataType: double
+		formatString: 0.0000
+		lineageTag: cf944193-45bc-4fe5-accc-1ebd7a964d46
+		sourceColumn: Accuracy
+
+	column Precision
+		dataType: double
+		formatString: 0.0000
+		lineageTag: 873bf984-c7ad-4b9d-bb70-3cc0abca3897
+		sourceColumn: Precision
+
+	column Recall
+		dataType: double
+		formatString: 0.0000
+		lineageTag: 3487c040-232c-49e3-8657-86a96a016037
+		sourceColumn: Recall
+
+	column F1
+		dataType: double
+		formatString: 0.0000
+		lineageTag: 5d363a7a-a553-49ee-bec2-f8609b28958f
+		sourceColumn: F1
+
+	column ROC_AUC
+		dataType: double
+		formatString: 0.0000
+		lineageTag: 17841f92-6c2f-4208-bad8-82a0928139ef
+		sourceColumn: ROC_AUC
+
+	column TP
+		dataType: int64
+		lineageTag: 93b24f51-c51c-4175-a324-8b506ad2c4e0
+		sourceColumn: TP
+
+	column FP
+		dataType: int64
+		lineageTag: 162fee89-80b1-4dcc-a5a4-3ac56bc8ab3a
+		sourceColumn: FP
+
+	column TN
+		dataType: int64
+		lineageTag: d0fb42a1-2f3a-45bf-b5a6-65a17830033f
+		sourceColumn: TN
+
+	column FN
+		dataType: int64
+		lineageTag: 672ac60e-4ebe-4fce-a76d-8f00bf2f88bc
+		sourceColumn: FN
+
+	column train_seconds
+		dataType: double
+		formatString: 0.0
+		lineageTag: d70552fe-0f62-4377-a7ec-c49f95261140
+		sourceColumn: train_seconds
+
+	partition FACT_MODEL_RESULTS = m
+		mode: import
+		source =
+				let
+					Source = Excel.Workbook(File.Contents("C:\\Users\\Adarsh singh\\.zcode\\workspace\\default\\securebig-backend\\results\\powerbi\\SecureBig_Tables.xlsx"), null, false),
+					Sheet = Source{[Item="FACT_MODEL_RESULTS",Kind="Sheet"]}[Data],
+					Promoted = Table.PromoteHeaders(Sheet, [PromoteAllScalars=true]),
+					ChangedType = Table.TransformColumnTypes(Promoted,{{"Dataset", type text}, {"Model", type text}, {"Accuracy", type number}, {"Precision", type number}, {"Recall", type number}, {"F1", type number}, {"ROC_AUC", type number}, {"TP", Int64.Type}, {"FP", Int64.Type}, {"TN", Int64.Type}, {"FN", Int64.Type}, {"train_seconds", type number}})
+				in
+					ChangedType
+

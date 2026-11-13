@@ -1,0 +1,360 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "table_drill_user",
+  "position": {
+    "x": 18,
+    "y": 70,
+    "z": 2000,
+    "height": 560,
+    "width": 900,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FACT_USER_WEEK_FEATURES"
+                    }
+                  },
+                  "Property": "user"
+                }
+              },
+              "queryRef": "FACT_USER_WEEK_FEATURES.user"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FACT_USER_WEEK_FEATURES"
+                    }
+                  },
+                  "Property": "week"
+                }
+              },
+              "queryRef": "FACT_USER_WEEK_FEATURES.week"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FACT_USER_WEEK_FEATURES"
+                    }
+                  },
+                  "Property": "label"
+                }
+              },
+              "queryRef": "FACT_USER_WEEK_FEATURES.label"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FACT_USER_WEEK_FEATURES"
+                    }
+                  },
+                  "Property": "prediction"
+                }
+              },
+              "queryRef": "FACT_USER_WEEK_FEATURES.prediction"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FACT_USER_WEEK_FEATURES"
+                    }
+                  },
+                  "Property": "suspicion_prob"
+                }
+              },
+              "queryRef": "FACT_USER_WEEK_FEATURES.suspicion_prob"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FACT_USER_WEEK_FEATURES"
+                    }
+                  },
+                  "Property": "logon_count"
+                }
+              },
+              "queryRef": "FACT_USER_WEEK_FEATURES.logon_count"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FACT_USER_WEEK_FEATURES"
+                    }
+                  },
+                  "Property": "failed_login_count"
+                }
+              },
+              "queryRef": "FACT_USER_WEEK_FEATURES.failed_login_count"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FACT_USER_WEEK_FEATURES"
+                    }
+                  },
+                  "Property": "after_hours_logons"
+                }
+              },
+              "queryRef": "FACT_USER_WEEK_FEATURES.after_hours_logons"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FACT_USER_WEEK_FEATURES"
+                    }
+                  },
+                  "Property": "external_ip_logons"
+                }
+              },
+              "queryRef": "FACT_USER_WEEK_FEATURES.external_ip_logons"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FACT_USER_WEEK_FEATURES"
+                    }
+                  },
+                  "Property": "sensitive_file_count"
+                }
+              },
+              "queryRef": "FACT_USER_WEEK_FEATURES.sensitive_file_count"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FACT_USER_WEEK_FEATURES"
+                    }
+                  },
+                  "Property": "usb_connects"
+                }
+              },
+              "queryRef": "FACT_USER_WEEK_FEATURES.usb_connects"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FACT_USER_WEEK_FEATURES"
+                    }
+                  },
+                  "Property": "upload_bytes"
+                }
+              },
+              "queryRef": "FACT_USER_WEEK_FEATURES.upload_bytes"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FACT_USER_WEEK_FEATURES"
+                    }
+                  },
+                  "Property": "total_events"
+                }
+              },
+              "queryRef": "FACT_USER_WEEK_FEATURES.total_events"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "FACT_USER_WEEK_FEATURES"
+                  }
+                },
+                "Property": "week"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'ALL BEHAVIOURAL EVENTS FOR THE DRILLED USER'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#E6F1FF'"
+                    }
+                  }
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'left'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#0D1426'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#1E2A44'"
+                    }
+                  }
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "6L"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "padding": [
+        {
+          "properties": {
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "8L"
+                }
+              }
+            },
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "8L"
+                }
+              }
+            },
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "8L"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "8L"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualHeader": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

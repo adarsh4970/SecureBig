@@ -1,0 +1,59 @@
+{
+  "generated_utc": "2026-11-10T07:35:22+00:00",
+  "project": "SecureBig (CBCA293 academic prototype)",
+  "seed": 42,
+  "runner_python": {
+    "executable": "C:\\Users\\Adarsh singh\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "version": "3.12.10"
+  },
+  "engine_python": {
+    "python": "3.13.7",
+    "executable": "C:\\Users\\Adarsh singh\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "packages": {
+      "pyspark": "4.2.0",
+      "pandas": "2.3.2",
+      "numpy": "2.3.3",
+      "scipy": "1.16.2",
+      "scikit-learn": "1.7.2",
+      "openpyxl": "3.1.5"
+    }
+  },
+  "java": "java version \"24.0.2\" 2025-07-15",
+  "platform": {
+    "system": "Windows",
+    "release": "11",
+    "machine": "AMD64"
+  },
+  "inputs": [
+    {
+      "path": "data/raw/transactions/creditcard.csv",
+      "bytes": 151102405,
+      "sha256": "895dc3dad2840ac9e05c12d6442bd739d879c2d405e9b065efc0f1973be46a84"
+    },
+    {
+      "path": "data/raw/user_activity/logon.csv",
+      "bytes": 1906017,
+      "sha256": "9762d855d90e179b4508d6a295a5076c494b98ba3bc101f8f0f1097963f32038"
+    },
+    {
+      "path": "data/raw/user_activity/file.csv",
+      "bytes": 5940051,
+      "sha256": "c90475bee037f44c4e13a2206a0fcc773c2c3b62df5f8d295bf7c920a99e660f"
+    },
+    {
+      "path": "data/raw/user_activity/device.csv",
+      "bytes": 47385,
+      "sha256": "7095c18fdd44e8a7969a2af9a24500ae887aba3d827f43663b2ba8b8bd1b0fc4"
+    },
+    {
+      "path": "data/raw/user_activity/http.csv",
+      "bytes": 2367149,
+      "sha256": "db5b69b33a873c6880e523cfa2016c10c0b0c2e0c4ad403e223e91df28f9f6af"
+    },
+    {
+      "path": "data/raw/user_activity/scenario_ground_truth.csv",
+      "bytes": 270,
+      "sha256": "4f39ea9d515ea3c68812234a65057c29fcc745c2c49fbe750f0b821417f6d4b4"
+    }
+  ]
+}

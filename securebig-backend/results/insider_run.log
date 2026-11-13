@@ -1,0 +1,34 @@
+The system cannot find the path specified.
+Missing Python executable 'C:\Users\Adarsh singh\AppData\Local\Programs\Python\Python313\python.exe', defaulting to 'C:\Users\Adarsh singh\AppData\Local\Programs\Python\Python313\Lib\site-packages\pyspark\bin\..' for SPARK_HOME environment variable. Please install Python or specify the correct Python executable in PYSPARK_DRIVER_PYTHON or PYSPARK_PYTHON environment variable to detect SPARK_HOME safely.
+WARNING: Using incubator modules: jdk.incubator.vector
+WARNING: package sun.security.action not in java.base
+26/10/01 12:01:47 WARN Shell: Did not find winutils.exe: java.io.FileNotFoundException: java.io.FileNotFoundException: HADOOP_HOME and hadoop.home.dir are unset. -see https://cwiki.apache.org/confluence/display/HADOOP2/WindowsProblems
+Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+26/10/01 12:01:48 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[Stage 8:>                  (0 + 1) / 1][Stage 9:>                  (0 + 2) / 2][Stage 8:>    (0 + 1) / 1][Stage 9:>    (0 + 2) / 2][Stage 11:>   (0 + 1) / 1][Stage 9:==>  (1 + 1) / 2][Stage 11:>   (0 + 1) / 1][Stage 12:> (0 + 10) / 12][Stage 12:>                                                       (0 + 12) / 12][Stage 12:>               (0 + 12) / 12][Stage 13:>                 (0 + 0) / 1][Stage 12:> (0 + 12) / 12][Stage 13:>   (0 + 0) / 1][Stage 14:>   (0 + 0) / 1][Stage 13:>   (0 + 1) / 1][Stage 14:>   (0 + 1) / 1][Stage 15:>   (0 + 1) / 1]                                                                                [Stage 147:============================>                           (8 + 8) / 16]                                                                                26/10/01 12:02:29 WARN SparkStringUtils: Truncated the string representation of a plan since it was too large. This behavior can be adjusted by setting 'spark.sql.debug.maxToStringFields'.
+[Stage 164:=============>                                         (4 + 12) / 16]                                                                                netlib-blas: JNI_OnLoad: dlopen(libopenblas.dll) failed: LoadLibrary failed
+== Phase 7: user-week feature table ==
+user-week rows: 2600  suspicious: 94 (3.6%)
+train 2088 / test 512 (natural distribution kept)
+oversampled train: 2680 rows
+Logistic Regression  acc=0.9922 P=1.0000 R=0.8000 F1=0.8889 AUC=0.9752 (19.6s)
+Decision Tree        acc=0.9961 P=0.9500 R=0.9500 F1=0.9500 AUC=0.9745 (3.7s)
+Random Forest        acc=0.9961 P=0.9091 R=1.0000 F1=0.9524 AUC=0.9991 (4.4s)
+Naive Bayes          acc=0.9961 P=0.9091 R=1.0000 F1=0.9524 AUC=0.9980 (1.8s)
+GBT                  acc=0.9961 P=0.9500 R=0.9500 F1=0.9500 AUC=0.9996 (11.3s)
+
+Model comparison (insider threat):
+              Model  Accuracy  Precision  Recall       F1  ROC_AUC  TP  FP  TN  FN  train_seconds
+Logistic Regression  0.992188   1.000000    0.80 0.888889 0.975203  16   0 492   4           19.6
+      Decision Tree  0.996094   0.950000    0.95 0.950000 0.974543  19   1 491   1            3.7
+      Random Forest  0.996094   0.909091    1.00 0.952381 0.999136  20   2 490   0            4.4
+        Naive Bayes  0.996094   0.909091    1.00 0.952381 0.997967  20   2 490   0            1.8
+                GBT  0.996094   0.950000    0.95 0.950000 0.999593  19   1 491   1           11.3
+
+best model by F1: Random Forest
+insider pipeline complete.
+SUCCESS: The process with PID 15764 (child process of PID 19896) has been terminated.
+SUCCESS: The process with PID 19896 (child process of PID 18792) has been terminated.
+SUCCESS: The process with PID 18792 (child process of PID 20272) has been terminated.

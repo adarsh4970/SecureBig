@@ -1,0 +1,4 @@
+relationship DIM_MODEL_to_FACT_MODEL_RESULTS
+	fromColumn: FACT_MODEL_RESULTS.Model
+	toColumn: DIM_MODEL.Model
+

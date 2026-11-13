@@ -1,0 +1,6 @@
+ModelId,Model,Family
+1,Logistic Regression,Linear
+2,Decision Tree,Tree
+3,Random Forest,Ensemble/Bagging
+4,Naive Bayes,Probabilistic
+5,GBT,Ensemble/Boosting
