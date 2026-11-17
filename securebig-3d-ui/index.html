@@ -755,15 +755,23 @@ document.querySelectorAll('.tilt').forEach(function(card){
   if(tb&&D.top_risk_users){
     var th=document.querySelectorAll('#insider table thead th');
     if(th.length>=7){ th[2].textContent='Suspicious Weeks'; th[5].textContent='Suspicion'; }
-    tb.innerHTML=D.top_risk_users.map(function(u){
+    tb.innerHTML='';
+    D.top_risk_users.forEach(function(u){
       var score=Math.round(u.max_prob*100);
-      var lvl=score>60?'<span class="badge b-high">High</span>'
-             :score>30?'<span class="badge b-med">Medium</span>'
-             :'<span class="badge b-low">Low</span>';
-      return '<tr><td class="mono">'+u.user+'</td><td>'+u.events.toLocaleString('en-US')+
-             '</td><td>'+u.suspicious_weeks+' wk</td><td>—</td><td>—</td><td><b>'+score+
-             '</b></td><td>'+lvl+'</td></tr>';
-    }).join('');
+      var tr=document.createElement('tr');
+      function td(txt,cls){ var c=document.createElement('td'); c.textContent=txt; if(cls)c.className=cls; tr.appendChild(c); }
+      td(u.user,'mono');
+      td(u.events.toLocaleString('en-US'));
+      td(u.suspicious_weeks+' wk');
+      td('\u2014'); td('\u2014');
+      var sc=document.createElement('td'); sc.innerHTML='<b>'+score+'</b>'; tr.appendChild(sc);
+      var lv=document.createElement('td');
+      lv.innerHTML=score>60?'<span class="badge b-high">High</span>'
+                  :score>30?'<span class="badge b-med">Medium</span>'
+                  :'<span class="badge b-low">Low</span>';
+      tr.appendChild(lv);
+      tb.appendChild(tr);
+    });
   }
 
   var note=document.querySelector('.note');

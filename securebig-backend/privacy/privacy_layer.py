@@ -66,6 +66,16 @@ def mask_card(card: str) -> str:
     return f"{'*' * max(len(digits) - 4, 0)}{digits[-4:]}" if digits else card
 
 
+def mask_name(name: str) -> str:
+    """Mask a person's name, keeping only first initial + last initial."""
+    parts = name.strip().split()
+    if len(parts) >= 2:
+        return f"{parts[0][0]}*** {parts[-1][0]}***"
+    elif parts:
+        return f"{parts[0][0]}***"
+    return name
+
+
 def sha256_hex(value: str) -> str:
     return hashlib.sha256(value.encode("utf-8")).hexdigest()
 
@@ -92,9 +102,11 @@ def main() -> None:
     logon = pd.read_csv(RAW / "logon.csv")
     file_ev = pd.read_csv(RAW / "file.csv")
     device = pd.read_csv(RAW / "device.csv")
+    http = pd.read_csv(RAW / "http.csv")
 
     # ---- 1) PSEUDONYMIZATION of employee ids ------------------------------
-    emp_ids = sorted(set(logon["user"]) | set(file_ev["user"]) | set(device["user"]))
+    emp_ids = sorted(set(logon["user"]) | set(file_ev["user"]) | set(device["user"])
+                     | set(http["user"]))
     pmap = pseudonymize_map(emp_ids)
     RESTRICTED.joinpath().mkdir(parents=True, exist_ok=True)
     pd.DataFrame({"employee_id": list(pmap), "pseudonym": [pmap[k] for k in pmap]}
@@ -108,6 +120,7 @@ def main() -> None:
     anon_logon = logon.assign(user=logon["user"].map(pmap))
     anon_file = file_ev.assign(user=file_ev["user"].map(pmap))
     anon_device = device.assign(user=device["user"].map(pmap))
+    anon_http = http.assign(user=http["user"].map(pmap))
 
     # ---- 2) HASHING of quasi-identifiers ----------------------------------
     print("\n2) HASHING (one-way, for IPs and USB devices)")
@@ -119,10 +132,12 @@ def main() -> None:
     print("\n3) MASKING (display minimization)")
     contacts = pd.DataFrame({
         "employee_id": [k for k, _ in example[:3]],
+        "name": ["John Doe", "Asha Raj", "Mike Wang"],
         "email": ["john.doe@corp.example", "asha.r@corp.example", "mike.w@corp.example"],
         "card": ["4539 8812 3456 1234", "5500 1122 3344 5566", "4111 0000 2222 9999"],
     })
     masked = contacts.assign(
+        name=contacts["name"].map(mask_name),
         email=contacts["email"].map(mask_email),
         card=contacts["card"].map(mask_card),
         employee_id=contacts["employee_id"].map(pmap),
@@ -134,6 +149,7 @@ def main() -> None:
     anon_logon.to_csv(ANON / "logon_pseudonymized.csv", index=False)
     anon_file.to_csv(ANON / "file_pseudonymized.csv", index=False)
     anon_device.to_csv(ANON / "device_pseudonymized.csv", index=False)
+    anon_http.to_csv(ANON / "http_pseudonymized.csv", index=False)
     print(f"\n4) Anonymized copies for DATA_ANALYST written to {ANON}")
 
     # ---- 5) RBAC access-control demonstration ------------------------------

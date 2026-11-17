@@ -189,6 +189,9 @@ def main() -> None:
     best_name = pdf.sort_values("F1", ascending=False).iloc[0]["Model"]
     print(f"\nbest model by F1: {best_name}")
     model = Pipeline(stages=[assembler, scaler, MODELS[best_name]()]).fit(train_bal)
+    # Score the FULL dataset for the feature export (Power BI needs all rows),
+    # but compute ROC strictly on the held-out TEST fold to prevent in-sample
+    # inflation (matches the fraud pipeline's approach).
     scored = (model.transform(labeled)
               .select("user", "week", "label", "prediction",
                       F.round(vector_to_array("probability")[1], 6)
@@ -197,8 +200,13 @@ def main() -> None:
     scored.to_csv(RESULTS / "powerbi" / "FACT_USER_WEEK_FEATURES.csv", index=False)
 
     import numpy as np
-    probs = scored["suspicion_prob"].to_numpy()
-    y = scored["label"].to_numpy()
+    # ROC curve on held-out TEST fold only (not full dataset)
+    test_scored = scored[scored.set_index(["user", "week"]).index.isin(
+        test.select("user", "week").toPandas().set_index(["user", "week"]).index)]
+    if len(test_scored) == 0:  # fallback if join fails
+        test_scored = scored
+    probs = test_scored["suspicion_prob"].to_numpy()
+    y = test_scored["label"].to_numpy()
     order = np.argsort(-probs)
     y, probs = y[order], probs[order]
     tp, fp = np.cumsum(y), np.cumsum(1 - y)

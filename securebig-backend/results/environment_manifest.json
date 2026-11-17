@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-11-10T07:35:22+00:00",
+  "generated_utc": "2026-11-16T16:33:23+00:00",
   "project": "SecureBig (CBCA293 academic prototype)",
   "seed": 42,
   "runner_python": {
@@ -33,22 +33,22 @@
     {
       "path": "data/raw/user_activity/logon.csv",
       "bytes": 1906017,
-      "sha256": "9762d855d90e179b4508d6a295a5076c494b98ba3bc101f8f0f1097963f32038"
+      "sha256": "c4c5ea72a3b237672f8b917997ebd074c1e83aa1deca25d7512ab4b24d7a85c3"
     },
     {
       "path": "data/raw/user_activity/file.csv",
       "bytes": 5940051,
-      "sha256": "c90475bee037f44c4e13a2206a0fcc773c2c3b62df5f8d295bf7c920a99e660f"
+      "sha256": "72d422117846e3b32f67be251e34c3231a4c5608a6535d1907ae4bade669f168"
     },
     {
       "path": "data/raw/user_activity/device.csv",
       "bytes": 47385,
-      "sha256": "7095c18fdd44e8a7969a2af9a24500ae887aba3d827f43663b2ba8b8bd1b0fc4"
+      "sha256": "b3e02bac5981f891d8e1dbee0ec9c805e7cffc51da64ff47cabc21fb86b6071b"
     },
     {
       "path": "data/raw/user_activity/http.csv",
       "bytes": 2367149,
-      "sha256": "db5b69b33a873c6880e523cfa2016c10c0b0c2e0c4ad403e223e91df28f9f6af"
+      "sha256": "8e06603d9433a1f8083b28f3d5ba3a0658d4e9697b86b8f0884ba5c07ed95de0"
     },
     {
       "path": "data/raw/user_activity/scenario_ground_truth.csv",

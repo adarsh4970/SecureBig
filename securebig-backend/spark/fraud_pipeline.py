@@ -24,7 +24,7 @@ from pyspark.ml.classification import (DecisionTreeClassifier,
                                        NaiveBayes,
                                        RandomForestClassifier)
 from pyspark.ml.evaluation import BinaryClassificationEvaluator
-from pyspark.ml.feature import VectorAssembler
+from pyspark.ml.feature import StandardScaler, VectorAssembler
 from pyspark.ml.functions import vector_to_array
 from pyspark.sql import functions as F
 
@@ -74,12 +74,16 @@ def main() -> None:
     print(f"schema: {', '.join(df.columns)}")
 
     # ---- Phase 7: features ---------------------------------------------------
-    feature_cols = [c for c in df.columns if c not in ("Time", "Class", "Amount")]
-    # Amount kept OUT of the PCA feature vector? No — Amount is real signal;
-    # we scale-free include it: trees don't care, NB/LR use standardized-ish data.
+    # Include all columns except the label. Time and Amount are raw (unscaled)
+    # alongside PCA-normalized V1–V28, so we apply StandardScaler to level the
+    # field for linear/probabilistic models (LR, NB) while trees are unaffected.
     feature_cols = [c for c in df.columns if c != "Class"]
-    assembler = VectorAssembler(inputCols=feature_cols, outputCol="features")
-    df = assembler.transform(df).select("features", "Class", "Time", "Amount")
+    assembler = VectorAssembler(inputCols=feature_cols, outputCol="raw_features")
+    scaler = StandardScaler(inputCol="raw_features", outputCol="features",
+                            withStd=True, withMean=False)
+    from pyspark.ml import Pipeline as _P
+    prep_model = _P(stages=[assembler, scaler]).fit(df)
+    df = prep_model.transform(df).select("features", "Class", "Time", "Amount")
 
     train, test = df.randomSplit([0.8, 0.2], seed=SEED)
     n_fraud = train.filter("Class = 1").count()

@@ -56,7 +56,9 @@ rng = random.Random(SEED)
 
 
 def ts(day: int, hour: float) -> datetime:
-    base = EPOCH + timedelta(days=day)
+    # Account for cross-midnight rollover: if hour >= 24 the event falls on
+    # the next calendar day (e.g., start 23:00 + 2h session -> 01:00 day+1).
+    base = EPOCH + timedelta(days=day + int(hour // 24))
     return base.replace(hour=int(hour) % 24, minute=int((hour % 1) * 60),
                         second=rng.randrange(60))
 

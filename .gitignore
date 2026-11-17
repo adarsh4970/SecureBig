@@ -26,3 +26,10 @@ securebig-backend/results/logs/
 # ---- OS / editor noise ----
 Thumbs.db
 .DS_Store
+
+# ---- Tooling / agent artifacts (not part of the project) ----
+graphify-out/
+.opencode/
+.zcodeignore
+AGENTS.md
+

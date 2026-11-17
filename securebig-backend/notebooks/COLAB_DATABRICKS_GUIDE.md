@@ -8,7 +8,7 @@ Big Data ecosystem at scale.
 
 1. New notebook → first cell:
    ```python
-   !pip install -q pyspark==4.0.0
+   !pip install -q pyspark==4.2.0
    !java -version   # Colab ships Java 11/17 — fine
    ```
 2. Upload the two datasets (or mount Drive):
